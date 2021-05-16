@@ -18,7 +18,7 @@ h6 {
 }
 
 .site-header .navbar-nav .nav-link {
-  color: #cbd5db;
+  color: #e4e4e4;
 }
 
 .site-header .navbar-nav .nav-link:hover {
@@ -96,8 +96,25 @@ a.article-title:hover {
   text-decoration: inherit;
 }
 
-.table-center {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 5%;
+.left{
+  display : flex;
+  justify-content : center;
+  align-items : center;
+  height : 100%;
+}
+
+.right{
+  display : flex;
+  justify-content : center;
+  align-items : center;
+  height : 100%;
+}
+
+@media (max-width: 1200px) { 
+  .left{
+    height:50%
+  }
+  .right{
+    height:50%
+  }
 }

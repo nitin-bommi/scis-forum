@@ -1,34 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="content-section">
-        <table>
-            <tr>
-                <td>
-                    <a href="{{ url_for('loginwithpassword') }}" class="text-link text-center">
-                        <div class="card" style="width: 18rem;">
-                            <img class="card-img-top" src="{{url_for('static', filename='images/password.png')}}"  alt="Card image cap">
-                            <div class="card-body">
-                              <h5 class="card-title">Password Login</h5>
-                            </div>
-                          </div>
-                    </a>
-                </td>
-                <td>
-                    <a href="{{ url_for('loginwithface') }}" class="text-link text-center">
-                        <div class="card" style="width: 18rem;">
-                            <img class="card-img-top" src="{{url_for('static', filename='images/face.png')}}"  alt="Card image cap">
-                            <div class="card-body">
-                              <h5 class="card-title">Face Login</h5>
-                            </div>
+        <div class="row">
+            <div class="col-lg-6 col-sm-12 left">
+                <a href="{{ url_for('login_password') }}" class="text-link text-center">
+                    <div class="card">
+                        <img class="card-img-top" src="{{url_for('static', filename='images/password.png')}}"  alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">Password Login</h5>
                         </div>
-                    </a>
-                </td>
-            </tr>
-        </table>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-6 col-sm-12 right">
+                <a href="{{ url_for('login_face') }}" class="text-link text-center">
+                    <div class="card">
+                        <img class="card-img-top" src="{{url_for('static', filename='images/face.png')}}"  alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">Face Login</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            Need An Account? <a class="ml-2" href="{{ url_for('register') }}">Sign Up Now</a>
-        </small>
-    </div>
-{% endblock content %}
+{% endblock %}
