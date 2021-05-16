@@ -13,3 +13,6 @@
 * You can now run the code
   * `python app.py` - for windows
   * `python3 app.py` - for ubuntu 
+
+## References
+* Base - https://github.com/CoreyMSchafer/code_snippets/tree/master/Python/Flask_Blog
