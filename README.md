@@ -10,6 +10,9 @@
 * Activate the virtual environment
   * `venv\Scripts\activate` - for windows
   * `venv\bin\activate` - for ubuntu
+* Install the dependancies
+  * `pip install requirements.txt` - for windows
+  * `pip3 install requirements.txt` - for ubuntu
 * You can now run the code
   * `python app.py` - for windows
   * `python3 app.py` - for ubuntu 
