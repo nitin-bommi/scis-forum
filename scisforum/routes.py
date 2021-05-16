@@ -46,9 +46,12 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login')
 def login():
+    return render_template('login.html', title='Login')
+
+@app.route('/loginwithpassword', methods=['GET', 'POST'])
+def loginwithpassword():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = LoginForm()
@@ -60,8 +63,11 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             flash('Login Unsuccessful. Please check username and password.', 'danger')
-    return render_template('login.html', title='Login', form=form)
+    return render_template('loginWithPassword.html', title='Login With Password', form=form)
 
+@app.route('/loginwithface')
+def loginwithface():
+    return render_template('loginWithFace.html')
 
 @app.route('/logout')
 def logout():
