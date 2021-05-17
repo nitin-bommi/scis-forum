@@ -153,3 +153,9 @@ a.article-title:hover {
 textarea {
   height: 500px;
 }
+
+.date{
+  color: #4ca1df;
+  font-size: x-large;
+  padding: 10px;
+}
