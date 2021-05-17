@@ -111,14 +111,19 @@ a.article-title:hover {
   background-color: #4ca1df;
 }
 
-.btn-pagination, .btn-pagination:active, .btn-pagination:hover, .btn-pagination:visited{
+.btn-pagination, .btn-pagination:active, .btn-pagination:hover{
   background-color: #4ca1df;
   color: white;
 }
 
-.btn-pagination-outline, .btn-pagination-outline:active, .btn-pagination-outline:hover, .btn-pagination-outline:visited{
+.btn-pagination-outline{
   background-color: white;
   color: #4ca1df;
+}
+
+.btn-pagination-outline:active, .btn-pagination-outline:hover{
+  background-color: #4ca1df;
+  color: white;
 }
 
 .left{
@@ -142,4 +147,8 @@ a.article-title:hover {
   .right{
     height:50%
   }
+}
+
+textarea {
+  height: 500px;
 }
