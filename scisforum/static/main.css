@@ -96,6 +96,31 @@ a.article-title:hover {
   text-decoration: inherit;
 }
 
+.link-color{
+  color: #4ca1df;
+}
+
+.button-outline{
+  background-color: white;
+  color: #4ca1df;
+  border-color: #4ca1df;
+}
+
+.button-outline:hover, .button-outline:active{
+  color: white;
+  background-color: #4ca1df;
+}
+
+.btn-pagination, .btn-pagination:active, .btn-pagination:hover, .btn-pagination:visited{
+  background-color: #4ca1df;
+  color: white;
+}
+
+.btn-pagination-outline, .btn-pagination-outline:active, .btn-pagination-outline:hover, .btn-pagination-outline:visited{
+  background-color: white;
+  color: #4ca1df;
+}
+
 .left{
   display : flex;
   justify-content : center;
