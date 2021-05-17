@@ -118,3 +118,17 @@ a.article-title:hover {
     height:50%
   }
 }
+
+.btn-primary{
+  background-color: #fafafa;
+  color: #4ca1df;
+}
+
+.btn-primary:hover, .btn-primary:active{
+  background-color: #4CA1DF;
+  color: #fafafa;
+}
+
+.redirection-link{
+  color: #4ca1df;
+}
