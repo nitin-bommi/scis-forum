@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from scisforum import app, db, bcrypt
-from scisforum.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
-from scisforum.models import User, Post
+from scisforum.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, MessageForm
+from scisforum.models import User, Post, Message
 from flask_login import login_user, current_user, logout_user, login_required
 from PIL import Image
 import os
@@ -159,3 +159,23 @@ def user_posts(username):
         .order_by(Post.date_posted.desc())\
         .paginate(page=page, per_page=5)
     return render_template('user_posts.html', posts=posts, user=user)
+
+
+@app.route('/chatting/<string:id>', methods=['GET', 'POST'])
+def chatting(username):
+
+    form = MessageForm(request.form)
+    user = User.query.filter_by(username=username).first_or_404()
+    if request.method == 'POST' and form.validate():
+        message = Message(msg_by_id = current_user.id, msg_to_id = user.id, body = form.body.data)
+        db.session.add(message)
+        db.session.commit()
+    users = User.query.all()
+    return render_template('chat_room.html', users=users, form=form)
+
+@app.route('/chats', methods=['GET', 'POST'])
+def chats():
+    uid = current_user.id
+    id = current_user.id
+    messages = Message.query.order_by(Message.msg_time.desc())
+    return render_template('chats.html', chats=messages)

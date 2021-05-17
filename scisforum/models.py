@@ -1,6 +1,7 @@
 from datetime import datetime
 from scisforum import db, login_manager
 from flask_login import UserMixin
+from sqlalchemy.orm import relationship
 
 
 @login_manager.user_loader
@@ -29,3 +30,15 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    msg_by_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    msg_to_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    msg_time = db.Column(db.DateTime, nullable=False, default = datetime.utcnow)
+    msg_by = relationship("User", foreign_keys=[msg_by_id])
+    msg_to = relationship("User", foreign_keys=[msg_to_id])
+
+    def __repr__(self):
+        return f"Message('{self.msg_by_id}', ' {self.msg_to_id}', ' {self.msg_time} ')"
