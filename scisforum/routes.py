@@ -3,6 +3,7 @@ from scisforum import app, db, bcrypt
 from scisforum.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, MessageForm
 from scisforum.models import User, Post, Message
 from flask_login import login_user, current_user, logout_user, login_required
+from sqlalchemy import or_, and_
 from PIL import Image
 import os
 import secrets
@@ -161,20 +162,24 @@ def user_posts(username):
     return render_template('user_posts.html', posts=posts, user=user)
 
 
-@app.route('/chatting/<string:id>', methods=['GET', 'POST'])
+@app.route('/chatting/<string:username>', methods=['GET', 'POST'])
+@login_required
 def chatting(username):
     form = MessageForm(request.form)
     user = User.query.filter_by(username=username).first_or_404()
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST':
         message = Message(msg_by_id = current_user.id, msg_to_id = user.id, body = form.body.data)
         db.session.add(message)
         db.session.commit()
     users = User.query.all()
-    return render_template('chat_room.html', users=users, form=form)
+    return render_template('chat_room.html', users=users, form=form, receiver = username)
 
 
-@app.route('/chats', methods=['GET', 'POST'])
-def chats():
+@app.route('/chats/<string:username>', methods=['GET', 'POST'])
+@login_required
+def chats(username):
     uid = current_user.id
-    messages = Message.query.order_by(Message.msg_time.desc())
+    user = User.query.filter_by(username=username).first_or_404()
+    id = user.id
+    messages = Message.query.filter(or_( ( and_(Message.msg_by_id == id, Message.msg_to_id == uid) ), ( and_(Message.msg_by_id == uid, Message.msg_to_id == id) ) ))
     return render_template('chats.html', title='Chat', chats=messages)

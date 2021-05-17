@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+
 {% for message in chats %}
-{% if (message.msg_by or message.msg_to) != current_user %}
+{% if (message.msg_by_id or message.msg_to_id) != current_user.id %}
     <div class="" style="text-align:right; padding:2px 5px;">
         <p>
             <span class="" style="background-color: #28a7ab;color: #fff;margin: 1px 0;padding: 6px 12px; border-radius: 12px;"> {{message.body}}</span>
