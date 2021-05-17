@@ -163,7 +163,6 @@ def user_posts(username):
 
 @app.route('/chatting/<string:id>', methods=['GET', 'POST'])
 def chatting(username):
-
     form = MessageForm(request.form)
     user = User.query.filter_by(username=username).first_or_404()
     if request.method == 'POST' and form.validate():
@@ -173,9 +172,9 @@ def chatting(username):
     users = User.query.all()
     return render_template('chat_room.html', users=users, form=form)
 
+
 @app.route('/chats', methods=['GET', 'POST'])
 def chats():
     uid = current_user.id
-    id = current_user.id
     messages = Message.query.order_by(Message.msg_time.desc())
-    return render_template('chats.html', chats=messages)
+    return render_template('chats.html', title='Chat', chats=messages)
