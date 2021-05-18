@@ -16,9 +16,8 @@
     setInterval(function(){ajax()}, 10);
 </script>
 
-<div class="row">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-4" style="background-color: #f5f5f5;margin: 0px 10px;border-radius: 4px; padding: 10px 20px 20px 20px;">
+<div class="content-section row">
+    <div class="col-md-4" style="background-color: #f5f5f5;margin: 0px 10px;border-radius: 4px; padding: 10px 20px 20px 20px;">
         <div style="text-align: center;font-size: 18px;background-color: #ddd;border-radius: 4px;color: #5e5fa4;margin-bottom: 8px;">
             <span>Users Chart</span>
         </div>
@@ -35,7 +34,7 @@
     <script>
        ajax();
     </script>
-    <div class="col-xs-6" style="background-color: #f5f5f5;margin: 0px 10px;border-radius: 4px; padding: 10px 20px 20px 20px;">
+    <div class="col-md-7" style="background-color: #f5f5f5;margin: 0px 10px;border-radius: 4px; padding: 10px 20px 20px 20px;">
             {% if(receiver!=current_user.username) %}
                 <div style="text-align: center;font-size: 18px; color: #22aa45;background-color: #ddd;border-radius: 4px;">
                     <span>{{receiver}}</span>
