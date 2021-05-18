@@ -24,15 +24,9 @@
         </div>
         <ul class="list-group">
             {% for user in users %}
-                {% if user.id != current_user %}
-                    <li class="list-group-item"><a href="{{user.username}}"> {{user.username}} </a>
-                        <!-- {% if user.online != "0" %}
-                            <span style="height: 12px;width: 12px;background-color: #1fc124;border-radius: 6px;
-                            float: right;margin-top: 5px;"></span>
-                        {% else %} -->
-                            <span style="height: 12px;width: 12px;background-color: #8a8a8a;border-radius: 6px;
-                            float: right;margin-top: 5px;"></span>
-                        <!-- {% endif %} -->
+                {% if user.id != current_user.id %}
+                    <li class="list-group-item">
+                        <a href="{{user.username}}"> {{user.username}} </a>
                     </li>
                 {% endif %}
             {% endfor %}
@@ -42,7 +36,6 @@
        ajax();
     </script>
     <div class="col-xs-6" style="background-color: #f5f5f5;margin: 0px 10px;border-radius: 4px; padding: 10px 20px 20px 20px;">
-
             {% if(receiver!=current_user.username) %}
                 <div style="text-align: center;font-size: 18px; color: #22aa45;background-color: #ddd;border-radius: 4px;">
                     <span>{{receiver}}</span>
@@ -61,8 +54,6 @@
                     </form>
                 </div>
             {% endif %}
-            
-
     </div>
     <div class="col-xs-1"></div>
 </div>
