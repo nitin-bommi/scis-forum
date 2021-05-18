@@ -7,6 +7,7 @@ from sqlalchemy import or_, and_
 from PIL import Image
 import os
 import secrets
+from scisforum.profanity_checker import predict_prob
 
 
 @app.route('/')
@@ -93,7 +94,7 @@ def account():
             current_user.image_file = picture_file
         current_user.email = form.email.data
         db.session.commit()
-        flash('Your account has been updated!', 'success')
+        flash('Your account has been updated.', 'success')
         return redirect(url_for('account'))
     elif request.method == 'GET':
         form.email.data = current_user.email
@@ -106,10 +107,13 @@ def account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
+        if predict_prob([form.content.data]) > 0.4:
+            flash('Your post contains inappropriate words. Please filter out them.', 'danger')
+            return redirect(url_for('new_post'))
         post = Post(title=form.title.data, content=form.content.data, author=current_user)
         db.session.add(post)
         db.session.commit()
-        flash('Your post has been created!', 'success')
+        flash('Your post has been created.', 'success')
         return redirect(url_for('home'))
     return render_template('create_post.html', title='New Post', form=form, legend='New Post')
 
@@ -129,6 +133,9 @@ def update_post(post_id):
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
+        if predict_prob([form.content.data]) > 0.4:
+            flash('Your post contains inappropriate words. Please filter out them.', 'danger')
+            return redirect(url_for('new_post'))
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
@@ -168,6 +175,9 @@ def chatting(username):
     form = MessageForm(request.form)
     user = User.query.filter_by(username=username).first_or_404()
     if request.method == 'POST':
+        if predict_prob([form.body.data]) > 0.4:
+            flash('Your text contains inappropriate words. Please filter out them.', 'danger')
+            return redirect(url_for('chatting', username=username))
         message = Message(msg_by_id=current_user.id, msg_to_id=user.id, body=form.body.data)
         db.session.add(message)
         db.session.commit()
