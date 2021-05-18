@@ -16,17 +16,23 @@
     setInterval(function(){ajax()}, 10);
 </script>
 
-<div class="content-section row">
-    <div class="col-md-4" style="background-color: #f5f5f5;margin: 0px 10px;border-radius: 4px; padding: 10px 20px 20px 20px;">
-        <div style="text-align: center;font-size: 18px;background-color: #ddd;border-radius: 4px;color: #5e5fa4;margin-bottom: 8px;">
+<div class="chat row">
+    <div class="col-sm-5 chat-user-list">
+        <div class="container chat-user-list-heading">
             <span>Users Chart</span>
         </div>
         <ul class="list-group">
             {% for user in users %}
                 {% if user.id != current_user.id %}
-                    <li class="list-group-item">
-                        <a href="{{user.username}}"> {{user.username}} </a>
-                    </li>
+                    {% if user.id == receiver %}
+                        <a class="text-link" href="{{user.username}}">
+                            <li class="list-group-item"> {{user.username}} </li>
+                        </a>
+                    {% else %}
+                        <a class="text-link" href="{{user.username}}">
+                            <li class="list-group-item"> {{user.username}} </li>
+                        </a>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </ul>
@@ -34,9 +40,9 @@
     <script>
        ajax();
     </script>
-    <div class="col-md-7" style="background-color: #f5f5f5;margin: 0px 10px;border-radius: 4px; padding: 10px 20px 20px 20px;">
+    <div class="col-sm-7 personal-chat">
             {% if(receiver!=current_user.username) %}
-                <div style="text-align: center;font-size: 18px; color: #22aa45;background-color: #ddd;border-radius: 4px;">
+                <div class="container chat-heading">
                     <span>{{receiver}}</span>
                 </div>
                 <div id="chat-box" style="overflow-y: scroll; height: 350px; padding: 10px 0px 0px 0px;">
@@ -44,12 +50,14 @@
                     </div>
                 </div>
                 {% from "_formhelpers.html" import render_field %}
-                <div>
-                    <form method="POST" action="">
-                        <div class="form-group">
-                            {{render_field(form.body, class_="form-control", value="", placeholder="Enter your text...")}}
+                <div class="m-0">
+                    <form method="POST" action="" class="m-0">
+                        <div class="form-group input-group mb-3 m-0 p-0">
+                            {{render_field(form.body, class_="form-control chat-text", value="", placeholder="Enter your text...")}}
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-outline-secondary">Send</button>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary pull-right">Send</button>
                     </form>
                 </div>
             {% endif %}

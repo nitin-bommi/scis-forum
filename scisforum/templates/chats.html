@@ -1,15 +1,15 @@
 
 {% for message in chats %}
 {% if (message.msg_by_id or message.msg_to_id) != current_user.id %}
-    <div class="" style="text-align:right; padding:2px 5px;">
+    <div class="from">
         <p>
-            <span class="" style="background-color: #28a7ab;color: #fff;margin: 1px 0;padding: 6px 12px; border-radius: 12px;"> {{message.body}}</span>
+            <span class="from-text"> {{message.body}}</span>
         </p>
     </div>
 {% else %}
-    <div class="" style="text-align:left; padding:2px 5px;">
+    <div class="to">
         <p>
-            <span class="" style="background-color: #dd92b2;color: #fff;margin: 1px 0;padding: 6px 12px; border-radius: 12px;"> {{message.body}}</span>
+            <span class="to-text"> {{message.body}}</span>
         </p>
     </div>
 {% endif %}
