@@ -194,26 +194,26 @@ def chats(username):
     messages = Message.query.filter(or_((and_(Message.msg_by_id==user.id, Message.msg_to_id==current_user.id)), (and_(Message.msg_by_id==current_user.id, Message.msg_to_id==user.id))))
     return render_template('chats.html', title='Chat', chats=messages)
 
-@app.route('/calender', methods=['GET', 'POST'])
+@app.route('/calendar', methods=['GET', 'POST'])
 @login_required
-def calender():
+def calendar():
     events = Event.query.all()
-    return render_template('calender.html', title='Calender', events = events)
+    return render_template('calendar.html', title='Calendar', events=events)
 
-@app.route("/insert_event",methods=["POST","GET"])
+@app.route("/insert_event", methods=["POST","GET"])
 @login_required
 def insert_event():
     if request.method == 'POST':
         title = request.form['title']
         start_time = dt.parse(request.form['start'])
         end_time = dt.parse(request.form['end'])
-        event = Event(title = title, start_time = start_time, end_time = end_time, creator_id = current_user.id)
+        event = Event(title=title, start_time=start_time, end_time=end_time, creator_id=current_user.id)
         db.session.add(event)
         db.session.commit()
         msg = 'Event created'
     return jsonify(msg)
 
-@app.route("/update_event",methods=["POST","GET"])
+@app.route("/update_event", methods=["POST","GET"])
 @login_required
 def update_event():
     if request.method == 'POST':
@@ -231,7 +231,7 @@ def update_event():
         msg = 'success'
     return jsonify(msg)
 
-@app.route("/delete_event",methods=["POST","GET"])
+@app.route("/delete_event", methods=["POST","GET"])
 @login_required
 def delete_event():
     if request.method == 'POST':
@@ -240,7 +240,6 @@ def delete_event():
         if event.creator_id != current_user.id:
             abort(403)
         db.session.delete(event)
-        db.session.commit() 
+        db.session.commit()
         msg = 'Event deleted'
-    return jsonify(msg)      
-
+    return jsonify(msg)
