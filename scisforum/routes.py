@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, abort
+from flask import render_template, url_for, flash, redirect, request, abort, jsonify
 from scisforum import app, db, bcrypt
 from scisforum.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, MessageForm
 from scisforum.models import User, Post, Message, Event
@@ -8,6 +8,8 @@ from PIL import Image
 import os
 import secrets
 from scisforum.profanity_checker import predict_prob
+from datetime import datetime
+import dateutil.parser as dt
 
 
 @app.route('/')
@@ -197,3 +199,48 @@ def chats(username):
 def calender():
     events = Event.query.all()
     return render_template('calender.html', title='Calender', events = events)
+
+@app.route("/insert_event",methods=["POST","GET"])
+@login_required
+def insert_event():
+    if request.method == 'POST':
+        title = request.form['title']
+        start_time = dt.parse(request.form['start'])
+        end_time = dt.parse(request.form['end'])
+        event = Event(title = title, start_time = start_time, end_time = end_time, creator_id = current_user.id)
+        db.session.add(event)
+        db.session.commit()
+        msg = 'Event created'
+    return jsonify(msg)
+
+@app.route("/update_event",methods=["POST","GET"])
+@login_required
+def update_event():
+    if request.method == 'POST':
+        title = request.form['title']
+        start_time = dt.parse(request.form['start'])
+        end_time = dt.parse(request.form['end'])
+        id = request.form['id']
+        event = Event.query.get_or_404(id)
+        if event.creator_id != current_user.id:
+            abort(403)
+        event.title = title
+        event.start_time = start_time
+        event.end_time = end_time
+        db.session.commit()
+        msg = 'success'
+    return jsonify(msg)
+
+@app.route("/delete_event",methods=["POST","GET"])
+@login_required
+def delete_event():
+    if request.method == 'POST':
+        id = request.form['id']
+        event = Event.query.get_or_404(id)
+        if event.creator_id != current_user.id:
+            abort(403)
+        db.session.delete(event)
+        db.session.commit() 
+        msg = 'Event deleted'
+    return jsonify(msg)      
+

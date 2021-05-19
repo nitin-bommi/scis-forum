@@ -18,7 +18,70 @@
         center:'title',
         right:'month,agendaWeek,agendaDay'
         },
-        events: [{% for row in events %}{ id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', } {% endfor %}],
+        events: [{% for row in events %}{ id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', }, {% endfor %}],
+        selectable : true,
+        selectHelper : true,
+        select : function(start, end, allDay)
+        {
+            //$("#exampleModal").modal("show");
+            var title = prompt("Enter Event Title");
+            if(title){
+                var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
+                var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
+                $.ajax({
+                    url:"/insert_event",
+                    type:"POST",
+                    data:{title:title, start:start, end:end},
+                    success:function(data){
+                        window.location.replace("/calender");
+                    }
+                })
+            }
+        },
+        editable : true,
+        eventResize:function(event){
+            var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
+            var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
+            var title = event.title;
+            var id = event.id;
+            $.ajax({
+                url:"/update_event",
+                type:"POST",
+                data:{title:title, start:start, end:end, id:id},
+                success:function(){
+                    calendar.fullCalendar('refetchEvents');
+                    //alert('Event Update');
+                }
+            })
+        },
+        eventDrop : function(event){
+            var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
+            var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
+            var title = event.title;
+            var id = event.id;
+            $.ajax({
+                url:"/update_event",
+                type:"POST",
+                data:{title:title, start:start, end:end, id:id},
+                success:function(){
+                    calendar.fullCalendar('refetchEvents');
+                }
+            });
+        },
+        eventClick:function(event){
+            if(confirm("Are you sure you want to remove it?")){
+                var id = event.id;
+                $.ajax({
+                    url:"/delete_event",
+                    type:"POST",
+                    data:{id:id},
+                    success:function(){
+                        calendar.fullCalendar('refetchEvents');
+                        window.location.replace("/calender");
+                    }
+                })
+            }
+        },
      });
     });
 </script>
@@ -29,5 +92,26 @@
     <div class="container">
         <div id="calendar"></div>
     </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Event Title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="form-group">
+                      <label for="title">Title</label>
+                      <input type="text" class="form-control" id="title" name="title" placeholder="Enter Event title">
+                    </div> 
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
 </body>
     
