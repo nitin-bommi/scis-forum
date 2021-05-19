@@ -169,7 +169,7 @@ textarea {
   background-color: #ffffff;
   margin: 0px;
   padding: 0px;
-  border-radius: 4px;
+  border: 1px solid #bdd7eb;
 }
 
 .chat-user-list-heading{
@@ -178,7 +178,6 @@ textarea {
   font-size: 18px;
   color: #000;
   padding: 10px;
-  border: 1px solid rgb(58, 54, 54);
 }
 
 .chat-heading{
@@ -188,20 +187,19 @@ textarea {
   color: #000;
   margin-bottom: 8px;
   padding: 10px;
-  border-bottom: 1px solid rgb(58, 54, 54);
 }
 
 .personal-chat{
   background-color: #ffffff;
   margin: 0px;
-  border-radius: 4px; 
   padding: 0px;
-  border: 1px solid rgb(58, 54, 54);
+  border: 1px solid #bdd7eb;
 }
 
 .chat-text{
   height: 50px;
-  margin: 0px;
+  margin-bottom : 0px;
+  padding-bottom: 0px;
 }
 
 .to{

@@ -8,11 +8,13 @@
             if(req.readyState == 4 && req.status == 200)
             {
             document.getElementById('chats').innerHTML = req.responseText;
+            
             }
         }
         req.open('POST', '/chats/{{receiver}}', true);
         req.send();
     }
+    
     setInterval(function(){ajax()}, 10);
 </script>
 
@@ -51,8 +53,8 @@
                 </div>
                 {% from "_formhelpers.html" import render_field %}
                 <div class="m-0">
-                    <form method="POST" action="" class="m-0">
-                        <div class="form-group input-group mb-3 m-0 p-0">
+                    <form method="POST" action="">
+                        <div class="form-group input-group mb-0">
                             {{render_field(form.body, class_="form-control chat-text", value="", placeholder="Enter your text...")}}
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-outline-secondary">Send</button>

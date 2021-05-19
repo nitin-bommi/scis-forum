@@ -1,13 +1,15 @@
-from flask import render_template, url_for, flash, redirect, request, abort
+from flask import render_template, url_for, flash, redirect, request, abort, jsonify
 from scisforum import app, db, bcrypt
 from scisforum.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, MessageForm
-from scisforum.models import User, Post, Message
+from scisforum.models import User, Post, Message, Event
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import or_, and_
 from PIL import Image
 import os
 import secrets
 from scisforum.profanity_checker import predict_prob
+from datetime import datetime
+import dateutil.parser as dt
 
 
 @app.route('/')
@@ -191,3 +193,53 @@ def chats(username):
     user = User.query.filter_by(username=username).first_or_404()
     messages = Message.query.filter(or_((and_(Message.msg_by_id==user.id, Message.msg_to_id==current_user.id)), (and_(Message.msg_by_id==current_user.id, Message.msg_to_id==user.id))))
     return render_template('chats.html', title='Chat', chats=messages)
+
+@app.route('/calendar', methods=['GET', 'POST'])
+@login_required
+def calendar():
+    events = Event.query.all()
+    return render_template('calendar.html', title='Calendar', events=events)
+
+@app.route("/insert_event", methods=["POST","GET"])
+@login_required
+def insert_event():
+    if request.method == 'POST':
+        title = request.form['title']
+        start_time = dt.parse(request.form['start'])
+        end_time = dt.parse(request.form['end'])
+        event = Event(title=title, start_time=start_time, end_time=end_time, creator_id=current_user.id)
+        db.session.add(event)
+        db.session.commit()
+        flash('Event Created.', 'success')
+    return redirect(url_for('calendar'))
+
+@app.route("/update_event", methods=["POST","GET"])
+@login_required
+def update_event():
+    if request.method == 'POST':
+        title = request.form['title']
+        start_time = dt.parse(request.form['start'])
+        end_time = dt.parse(request.form['end'])
+        id = request.form['id']
+        event = Event.query.get_or_404(id)
+        if event.creator_id != current_user.id:
+            abort(403)
+        event.title = title
+        event.start_time = start_time
+        event.end_time = end_time
+        db.session.commit()
+        flash('Event updated.', 'success')
+    return redirect(url_for('calendar'))
+
+@app.route("/delete_event", methods=["POST","GET"])
+@login_required
+def delete_event():
+    if request.method == 'POST':
+        id = request.form['id']
+        event = Event.query.get_or_404(id)
+        if event.creator_id != current_user.id:
+            abort(403)
+        db.session.delete(event)
+        db.session.commit()
+        flash('Event deleted.', 'success')
+    return redirect(url_for('calendar'))

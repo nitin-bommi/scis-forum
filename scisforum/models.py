@@ -42,3 +42,13 @@ class Message(db.Model):
 
     def __repr__(self):
         return f"Message('{self.msg_by_id}', ' {self.msg_to_id}', ' {self.msg_time} ')"
+
+class Event(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(100), nullable = False)
+    start_time = db.Column(db.DateTime, nullable = False)
+    end_time = db.Column(db.DateTime, nullable = False)
+    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
+    
+    def __repr__(self):
+        return f"Event('{self.title}', ' {self.creator_id}')"
