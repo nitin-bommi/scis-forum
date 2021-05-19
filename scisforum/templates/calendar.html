@@ -57,11 +57,11 @@
               var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
               var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
               $.ajax({
-                  url:"url_for('insert_event')",
+                  url:"{{ url_for('insert_event') }}",
                   type:"POST",
                   data:{title:title, start:start, end:end},
                   success:function(data){
-                      window.location.replace("/calender");
+                      window.location.replace("{{ url_for('calendar') }}");
                   }
               })
           }
@@ -73,7 +73,7 @@
           var title = event.title;
           var id = event.id;
           $.ajax({
-              url:"url_for('update_event')",
+              url:"{{ url_for('update_event') }}",
               type:"POST",
               data:{title:title, start:start, end:end, id:id},
               success:function(){
@@ -88,7 +88,7 @@
           var title = event.title;
           var id = event.id;
           $.ajax({
-              url:"url_for('update_event')",
+              url:"{{ url_for('update_event') }}",
               type:"POST",
               data:{title:title, start:start, end:end, id:id},
               success:function(){
@@ -100,7 +100,7 @@
           if(confirm("Are you sure you want to remove it?")){
               var id = event.id;
               $.ajax({
-                  url:"url_for('delete_event')",
+                  url:"{{ url_for('delete_event') }}",
                   type:"POST",
                   data:{id:id},
                   success:function(){

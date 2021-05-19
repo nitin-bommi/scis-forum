@@ -200,7 +200,7 @@ def calendar():
     events = Event.query.all()
     return render_template('calendar.html', title='Calendar', events=events)
 
-@app.route("/insert_event", methods=["POST","GET"])
+@app.route("/calendar/insert_event", methods=["POST","GET"])
 @login_required
 def insert_event():
     if request.method == 'POST':
@@ -213,7 +213,7 @@ def insert_event():
         msg = 'Event created'
     return jsonify(msg)
 
-@app.route("/update_event", methods=["POST","GET"])
+@app.route("/calendar/update_event", methods=["POST","GET"])
 @login_required
 def update_event():
     if request.method == 'POST':
@@ -231,7 +231,7 @@ def update_event():
         msg = 'success'
     return jsonify(msg)
 
-@app.route("/delete_event", methods=["POST","GET"])
+@app.route("/calendar/delete_event", methods=["POST","GET"])
 @login_required
 def delete_event():
     if request.method == 'POST':
