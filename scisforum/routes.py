@@ -210,8 +210,8 @@ def insert_event():
         event = Event(title=title, start_time=start_time, end_time=end_time, creator_id=current_user.id)
         db.session.add(event)
         db.session.commit()
-        msg = 'Event created'
-    return jsonify(msg)
+        flash('Event Created.', 'success')
+    return redirect(url_for('calendar'))
 
 @app.route("/update_event", methods=["POST","GET"])
 @login_required
@@ -228,8 +228,8 @@ def update_event():
         event.start_time = start_time
         event.end_time = end_time
         db.session.commit()
-        msg = 'success'
-    return jsonify(msg)
+        flash('Event updated.', 'success')
+    return redirect(url_for('calendar'))
 
 @app.route("/delete_event", methods=["POST","GET"])
 @login_required
@@ -241,5 +241,5 @@ def delete_event():
             abort(403)
         db.session.delete(event)
         db.session.commit()
-        msg = 'Event deleted'
-    return jsonify(msg)
+        flash('Event deleted.', 'success')
+    return redirect(url_for('calendar'))
