@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from scisforum import app, db, bcrypt
 from scisforum.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, MessageForm
-from scisforum.models import User, Post, Message
+from scisforum.models import User, Post, Message, Event
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import or_, and_
 from PIL import Image
@@ -191,3 +191,9 @@ def chats(username):
     user = User.query.filter_by(username=username).first_or_404()
     messages = Message.query.filter(or_((and_(Message.msg_by_id==user.id, Message.msg_to_id==current_user.id)), (and_(Message.msg_by_id==current_user.id, Message.msg_to_id==user.id))))
     return render_template('chats.html', title='Chat', chats=messages)
+
+@app.route('/calender', methods=['GET', 'POST'])
+@login_required
+def calender():
+    events = Event.query.all()
+    return render_template('calender.html', title='Calender', events = events)
