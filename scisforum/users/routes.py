@@ -3,8 +3,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 from scisforum import db, bcrypt
 from scisforum.models import User, Post
 from scisforum.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
-                                   RequestResetForm, ResetPasswordForm)
-from scisforum.users.utils import save_picture, send_reset_email
+                                   RequestResetForm, ResetPasswordForm, FaceLoginForm)
+from scisforum.users.utils import save_picture, send_reset_email, image_to_encoding, verify_face
 
 users = Blueprint('users', __name__)
 
@@ -16,7 +16,8 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        encoding_file = image_to_encoding(request.form['face_img'], form.username.data)
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password, encoding_file=encoding_file)
         db.session.add(user)
         db.session.commit()
         flash(f'Account created. You can now login.', 'success')
@@ -45,9 +46,20 @@ def login_password():
     return render_template('login_password.html', title='Login', form=form)
 
 
-@users.route('/login_face')
+@users.route('/login_face', methods=['GET', 'POST'])
 def login_face():
-    return render_template('login_face.html')
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    form = FaceLoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and verify_face(user.encoding_file, request.form['face_img']):
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('main.home'))
+        else:
+            flash('Login Unsuccessful. Face not recognized.', 'danger')
+    return render_template('login_face.html', title='Login', form=form)
 
 
 @users.route('/logout')
@@ -56,7 +68,7 @@ def logout():
     return redirect(url_for('users.login'))
 
 
-@users.route("/account", methods=['GET', 'POST'])
+@users.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     form = UpdateAccountForm()
@@ -74,7 +86,7 @@ def account():
     return render_template('account.html', title='Account', image_file=image_file, form=form)
 
 
-@users.route("/user/<string:username>")
+@users.route('/user/<string:username>')
 def user_posts(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
@@ -84,7 +96,7 @@ def user_posts(username):
     return render_template('user_posts.html', posts=posts, user=user)
 
 
-@users.route("/reset_password", methods=['GET', 'POST'])
+@users.route('/reset_password', methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
@@ -97,7 +109,7 @@ def reset_request():
     return render_template('reset_request.html', title='Reset Password', form=form)
 
 
-@users.route("/reset_password/<token>", methods=['GET', 'POST'])
+@users.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_token(token):
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
