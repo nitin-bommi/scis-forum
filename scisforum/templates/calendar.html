@@ -20,7 +20,7 @@
       },
       events: [
         {% for row in events %}
-          { id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', } 
+          { id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', }, 
         {% endfor %}
       ],
       selectable: true,
@@ -32,6 +32,7 @@
           if(title){
               start=moment(start).format('YYYY-MM-DDTHH:mm:ssZ'); 
               end=moment(end).format('YYYY-MM-DDTHH:mm:ssZ'); 
+              var u = "{{url_for('calendar.insert_event')}}";
               $.ajax({
                   url:"{{url_for('calendar.insert_event')}}",
                   type:"POST",
