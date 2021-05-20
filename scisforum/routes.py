@@ -203,6 +203,8 @@ def calendar():
 @app.route("/insert_event", methods=["POST","GET"])
 @login_required
 def insert_event():
+    if not current_user.access:
+        abort(403)
     if request.method == 'POST':
         title = request.form['title']
         start_time = dt.parse(request.form['start'])
@@ -211,11 +213,13 @@ def insert_event():
         db.session.add(event)
         db.session.commit()
         flash('Event Created.', 'success')
-    return redirect(url_for('calendar'))
+        return redirect(url_for('calendar'))
 
 @app.route("/update_event", methods=["POST","GET"])
 @login_required
 def update_event():
+    if not current_user.access:
+        abort(403)
     if request.method == 'POST':
         title = request.form['title']
         start_time = dt.parse(request.form['start'])
@@ -229,11 +233,13 @@ def update_event():
         event.end_time = end_time
         db.session.commit()
         flash('Event updated.', 'success')
-    return redirect(url_for('calendar'))
+        return redirect(url_for('calendar'))
 
 @app.route("/delete_event", methods=["POST","GET"])
 @login_required
 def delete_event():
+    if not current_user.access:
+        abort(403)
     if request.method == 'POST':
         id = request.form['id']
         event = Event.query.get_or_404(id)
@@ -242,4 +248,4 @@ def delete_event():
         db.session.delete(event)
         db.session.commit()
         flash('Event deleted.', 'success')
-    return redirect(url_for('calendar'))
+        return redirect(url_for('calendar'))

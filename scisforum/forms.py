@@ -4,6 +4,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextA
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from scisforum.models import User
 from flask_login import current_user
+import re
 
 
 class RegistrationForm(FlaskForm):
