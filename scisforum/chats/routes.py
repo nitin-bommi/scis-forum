@@ -27,7 +27,7 @@ def chatting(username):
 
 @chats.route('/chats/<string:username>', methods=['GET', 'POST'])
 @login_required
-def chats(username):
+def chats_view(username):
     user = User.query.filter_by(username=username).first_or_404()
     messages = Message.query.filter(or_((and_(Message.msg_by_id==user.id, Message.msg_to_id==current_user.id)), (and_(Message.msg_by_id==current_user.id, Message.msg_to_id==user.id))))
     return render_template('chats.html', title='Chat', chats=messages)

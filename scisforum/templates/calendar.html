@@ -33,7 +33,7 @@
               start=moment(start).format('YYYY-MM-DDTHH:mm:ssZ'); 
               end=moment(end).format('YYYY-MM-DDTHH:mm:ssZ'); 
               $.ajax({
-                  url:"{{url_for('insert_event')}}",
+                  url:"{{url_for('calendar.insert_event')}}",
                   type:"POST",
                   data:{title:title, start:start, end:end},
                   success:function(){
@@ -49,7 +49,7 @@
           var title = event.title;
           var id = event.id;
           $.ajax({
-              url:"{{url_for('update_event')}}",
+              url:"{{url_for('calendar.update_event')}}",
               type:"POST",
               data:{title:title, start:start, end:end, id:id},
               success:function(){
@@ -63,7 +63,7 @@
           var title = event.title;
           var id = event.id;  
           $.ajax({
-              url:"{{url_for('update_event')}}",
+              url:"{{url_for('calendar.update_event')}}",
               type:"POST",
               data:{title:title, start:start, end:end, id:id},
               success:function(){
@@ -75,7 +75,7 @@
           if(confirm("Are you sure you want to remove it?")){
               var id = event.id;
               $.ajax({
-                  url:"{{url_for('delete_event')}}",
+                  url:"{{url_for('calendar.delete_event')}}",
                   type:"POST",
                   data:{id:id},
                   success:function(){

@@ -9,12 +9,12 @@ calendar = Blueprint('calendar', __name__)
 
 @calendar.route('/calendar', methods=['GET', 'POST'])
 @login_required
-def calendar():
+def calendar_view():
     events = Event.query.all()
     return render_template('calendar.html', title='Calendar', events=events)
 
 
-@calendar.route("/insert_event", methods=["POST","GET"])
+@calendar.route("/insert_event", methods=['GET', 'POST'])
 @login_required
 def insert_event():
     if not current_user.access:
@@ -27,10 +27,10 @@ def insert_event():
         db.session.add(event)
         db.session.commit()
         flash('Event Created.', 'success')
-        return redirect(url_for('calendar.calendar'))
+        return redirect(url_for('calendar.calendar_view'))
 
 
-@calendar.route("/update_event", methods=["POST","GET"])
+@calendar.route("/update_event", methods=['GET', 'POST'])
 @login_required
 def update_event():
     if not current_user.access:
@@ -48,10 +48,10 @@ def update_event():
         event.end_time = end_time
         db.session.commit()
         flash('Event updated.', 'success')
-        return redirect(url_for('calendar.calendar'))
+        return redirect(url_for('calendar.calendar_view'))
 
 
-@calendar.route("/delete_event", methods=["POST","GET"])
+@calendar.route("/delete_event", methods=['GET', 'POST'])
 @login_required
 def delete_event():
     if not current_user.access:
@@ -64,4 +64,4 @@ def delete_event():
         db.session.delete(event)
         db.session.commit()
         flash('Event deleted.', 'success')
-        return redirect(url_for('calendar.calendar'))
+        return redirect(url_for('calendar.calendar_view'))

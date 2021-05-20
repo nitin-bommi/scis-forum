@@ -28,7 +28,7 @@ def create_app(config_class=Config):
     from scisforum.main.routes import main
     from scisforum.chats.routes import chats
     from scisforum.calendar.routes import calendar
-    from flaskblog.errors.handlers import errors
+    from scisforum.errors.handlers import errors
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(main)
