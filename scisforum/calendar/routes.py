@@ -17,7 +17,7 @@ def calendar_view():
 @calendar.route("/insert_event", methods=['GET', 'POST'])
 @login_required
 def insert_event():
-    if not current_user.access:
+    if current_user.access == False:
         abort(403)
     if request.method == 'POST':
         title = request.form['title']
@@ -33,7 +33,7 @@ def insert_event():
 @calendar.route("/update_event", methods=['GET', 'POST'])
 @login_required
 def update_event():
-    if not current_user.access:
+    if current_user.access == False:
         abort(403)
     if request.method == 'POST':
         title = request.form['title']
@@ -54,7 +54,7 @@ def update_event():
 @calendar.route("/delete_event", methods=['GET', 'POST'])
 @login_required
 def delete_event():
-    if not current_user.access:
+    if current_user.access == False:
         abort(403)
     if request.method == 'POST':
         id = request.form['id']
