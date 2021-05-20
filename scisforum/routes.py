@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, abort, jsonify
-from scisforum import app, db, bcrypt
-from scisforum.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, MessageForm
+from scisforum import app, db, bcrypt, mail
+from scisforum.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, MessageForm, RequestResetForm, ResetPasswordForm
 from scisforum.models import User, Post, Message, Event
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import or_, and_
@@ -8,8 +8,8 @@ from PIL import Image
 import os
 import secrets
 from scisforum.profanity_checker import predict_prob
-from datetime import datetime
 import dateutil.parser as dt
+from flask_mail import Message
 
 
 @app.route('/')
@@ -194,11 +194,13 @@ def chats(username):
     messages = Message.query.filter(or_((and_(Message.msg_by_id==user.id, Message.msg_to_id==current_user.id)), (and_(Message.msg_by_id==current_user.id, Message.msg_to_id==user.id))))
     return render_template('chats.html', title='Chat', chats=messages)
 
+
 @app.route('/calendar', methods=['GET', 'POST'])
 @login_required
 def calendar():
     events = Event.query.all()
     return render_template('calendar.html', title='Calendar', events=events)
+
 
 @app.route("/insert_event", methods=["POST","GET"])
 @login_required
@@ -214,6 +216,7 @@ def insert_event():
         db.session.commit()
         flash('Event Created.', 'success')
         return redirect(url_for('calendar'))
+
 
 @app.route("/update_event", methods=["POST","GET"])
 @login_required
@@ -235,6 +238,7 @@ def update_event():
         flash('Event updated.', 'success')
         return redirect(url_for('calendar'))
 
+
 @app.route("/delete_event", methods=["POST","GET"])
 @login_required
 def delete_event():
@@ -249,3 +253,46 @@ def delete_event():
         db.session.commit()
         flash('Event deleted.', 'success')
         return redirect(url_for('calendar'))
+
+
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender='imtech2k18@gmail.com',
+                  recipients=[user.email])
+    msg.body = f'''To reset your password, visit the following link:
+{url_for('reset_token', token=token, _external=True)}
+If you did not make this request then simply ignore this email and no changes will be made.
+'''
+    mail.send(msg)
+
+
+@app.route("/reset_password", methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash('An email has been sent with instructions to reset your password.', 'info')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html', title='Reset Password', form=form)
+
+
+@app.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token.', 'warning')
+        return redirect(url_for('reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated.', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_token.html', title='Reset Password', form=form)
