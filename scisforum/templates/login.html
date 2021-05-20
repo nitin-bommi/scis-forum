@@ -3,7 +3,7 @@
     <div class="content-section">
         <div class="row">
             <div class="col-lg-6 col-sm-12 left">
-                <a href="{{ url_for('login_password') }}" class="text-link text-center">
+                <a href="{{ url_for('users.login_password') }}" class="text-link text-center">
                     <div class="card">
                         <img class="card-img-top" src="{{url_for('static', filename='images/password.png')}}"  alt="Card image cap">
                         <div class="card-body">
@@ -13,7 +13,7 @@
                 </a>
             </div>
             <div class="col-lg-6 col-sm-12 right">
-                <a href="{{ url_for('login_face') }}" class="text-link text-center">
+                <a href="{{ url_for('users.login_face') }}" class="text-link text-center">
                     <div class="card">
                         <img class="card-img-top" src="{{url_for('static', filename='images/face.png')}}"  alt="Card image cap">
                         <div class="card-body">

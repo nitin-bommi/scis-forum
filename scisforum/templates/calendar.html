@@ -18,7 +18,11 @@
       center:'title',
       right:'month,agendaWeek,agendaDay'
       },
-      events: [{% for row in events %}{ id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', }, {% endfor %}],
+      events: [
+        {% for row in events %}
+          { id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', } 
+        {% endfor %}
+      ],
       selectable: true,
       selectHelper: true,
       select: function(start, end, allDay)

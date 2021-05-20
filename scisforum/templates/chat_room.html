@@ -11,7 +11,7 @@
             
             }
         }
-        req.open('POST', '/chats/{{receiver}}', true);
+        req.open('POST', '/chats/{{ receiver }}', true);
         req.send();
     }
     
@@ -27,11 +27,11 @@
             {% for user in users %}
                 {% if user.id != current_user.id %}
                     {% if user.id == receiver %}
-                        <a class="text-link" href="{{user.username}}">
+                        <a class="text-link" href="{{ user.username }}">
                             <li class="list-group-item"> {{user.username}} </li>
                         </a>
                     {% else %}
-                        <a class="text-link" href="{{user.username}}">
+                        <a class="text-link" href="{{ user.username }}">
                             <li class="list-group-item"> {{user.username}} </li>
                         </a>
                     {% endif %}

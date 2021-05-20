@@ -5,11 +5,11 @@
           <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
           <div class="media-body">
             <div class="article-metadata d-flex justify-content-between p-3">
-              <a class="mr-2 link-color" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+              <a class="mr-2 link-color" href="{{ url_for('posts.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
               <small class="text-muted">on {{ post.date_posted.strftime('%d-%m-%Y') }}</small>
             </div>
             <div class="p-2">
-              <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+              <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
               <p class="article-content">{{ post.content }}</p>
             </div>
           </div>
@@ -19,9 +19,9 @@
       {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
         {% if page_num %}
           {% if posts.page == page_num %}
-            <a class="btn mb-4 btn-pagination" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+            <a class="btn mb-4 btn-pagination" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
           {% else %}
-            <a class="btn mb-4 btn-pagination-outline" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+            <a class="btn mb-4 btn-pagination-outline" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
           {% endif %}
         {% else %}
           ...

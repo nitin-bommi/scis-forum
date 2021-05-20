@@ -1,10 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from scisforum.models import User
 from flask_login import current_user
-import re
+from flaskblog.models import User
 
 
 class RegistrationForm(FlaskForm):
@@ -42,16 +41,6 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('That email is already taken. Please choose another.')
-
-
-class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired(), Length(min=2, max=100)])
-    content = TextAreaField('Content', validators=[DataRequired(), Length(min=10, max=1000)])
-    submit = SubmitField('Post')
-
-
-class MessageForm(FlaskForm):
-    body = StringField('', validators=[DataRequired(), Length(min=1)], render_kw={'autofocus': True})
 
 
 class RequestResetForm(FlaskForm):

@@ -3,13 +3,13 @@
 {% if (message.msg_by_id or message.msg_to_id) != current_user.id %}
     <div class="from">
         <p>
-            <span class="from-text"> {{message.body}}</span>
+            <span class="from-text"> {{ message.body }}</span>
         </p>
     </div>
 {% else %}
     <div class="to">
         <p>
-            <span class="to-text"> {{message.body}}</span>
+            <span class="to-text"> {{ message.body }}</span>
         </p>
     </div>
 {% endif %}
