@@ -24,4 +24,6 @@
 * Go to python shell in scis-forum directory
 * `from scisforum import db, create_app `
 * `from scisforum.models import Post`
+* `app = create_app()`
+* `app.app_context().push()`
 
