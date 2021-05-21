@@ -52,6 +52,9 @@ def login_face():
     form = FaceLoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            flash('Check username and try again.', 'danger')
+            return redirect(url_for('users.login_face'))
         if user.face_access == False:
             flash('Your face is not yet registered. Please register in account.', 'danger')
             return redirect(url_for('users.login_password'))
