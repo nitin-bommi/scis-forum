@@ -59,8 +59,8 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
-                    <video id="stream" width="370" height="320">
-                        <canvas id="capture" width="370" height="320">
+                    <video id="stream" width="600" height="480">
+                        <canvas id="capture"  width="600" height="480">
                         </canvas>
                     </video>
                     <button id="btn-capture" type="button" class="btn btn-primary justify-content-center">Capture Image</button>
@@ -125,8 +125,8 @@
       var img = new Image();
       ctx.drawImage( stream, 0, 0, capture.width, capture.height );
       img.src		= capture.toDataURL( "image/png" );
-      img.width	= 370;
-      img.height	= 320;
+      img.width	    = 600;
+      img.height	= 480;
       //console.log(capture.toDataURL( "image/png" ));
       snapshot.innerHTML = '';
       snapshot.appendChild( img );

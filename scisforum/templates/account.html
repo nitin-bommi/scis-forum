@@ -37,7 +37,103 @@
             </fieldset>
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info button-outline") }}
+                <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#faceModal">
+                    Update Face Data
+                </button>
             </div>
         </form>
     </div>
+
+    <div class="modal fade" id="faceModal" tabindex="-1" role="dialog" aria-labelledby="faceModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="{{ url_for('users.update_face', user_id=current_user.id) }}" method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="faceModalLabel">Update Face</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <video id="stream" width="600" height="480">
+                                <canvas id="capture"  width="600" height="480">
+                                </canvas>
+                            </video>
+                            <button id="btn-capture" type="button" class="btn btn-primary justify-content-center">Capture Image</button>
+                            <br><br>
+                            <div id="snapshot"></div>
+                            <input type="hidden" id="face_img" name="face_img">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+  var btnCapture = document.getElementById("btn-capture");
+  var stream = document.getElementById("stream");
+  var capture = document.getElementById("capture");
+  var snapshot = document.getElementById("snapshot");
+  var cameraStream = null;
+    
+  btnCapture.addEventListener( "click", captureSnapshot );
+
+  function startStreaming() {
+    var mediaSupport = 'mediaDevices' in navigator;
+    if( mediaSupport && null == cameraStream ) {
+      navigator.mediaDevices.getUserMedia( { video: true } )
+      .then( function( mediaStream ) {
+        cameraStream = mediaStream;
+        stream.srcObject = mediaStream;
+        stream.play();
+      })
+      .catch( function( err ) {
+        console.log( "Unable to access camera: " + err );
+      });
+    }
+    else {
+      alert( 'Your browser does not support media devices.' );
+      return;
+    }
+  }
+    
+  function stopStreaming() {
+    if( null != cameraStream ) {
+      var track = cameraStream.getTracks()[ 0 ];
+      track.stop();
+      stream.load();
+      cameraStream = null;
+    }
+  }
+    
+  function captureSnapshot() {
+    if( null != cameraStream ) {
+      var ctx = capture.getContext( '2d' );
+      var img = new Image();
+      ctx.drawImage( stream, 0, 0, capture.width, capture.height );
+      img.src		= capture.toDataURL( "image/png" );
+      img.width	    = 600;
+      img.height	= 480;
+      //console.log(capture.toDataURL( "image/png" ));
+      snapshot.innerHTML = '';
+      snapshot.appendChild( img );
+      var res = capture.toDataURL();
+      console.log(res);
+      snapshot.innerHTML = '';
+      snapshot.appendChild( img );
+      $("#face_img").val(res)    
+    }
+  }
+  window.onload = function() {
+      startStreaming();
+      captureSnapshot();
+  }
+</script>
+{% endblock %}

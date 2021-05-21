@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint
+from flask import render_template, url_for, flash, redirect, request, abort, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from scisforum import db, bcrypt
 from scisforum.models import User, Post
@@ -60,6 +60,21 @@ def login_face():
         else:
             flash('Login Unsuccessful. Face not recognized.', 'danger')
     return render_template('login_face.html', title='Login', form=form)
+
+
+@users.route("/<int:user_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_face(user_id):
+    user = User.query.get_or_404(user_id)
+    if user_id != user.id:
+        abort(403)
+    if request.method == 'POST':
+        encoding_file = image_to_encoding(request.form['face_img'], user.username)
+        user.encoding_file = encoding_file
+        db.session.add(user)
+        db.session.commit()
+        flash(f'Face data updated successfully.', 'success')
+        return redirect(url_for('users.account'))
 
 
 @users.route('/logout')
