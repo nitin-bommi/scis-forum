@@ -23,15 +23,17 @@
           <div class="form-group">
             <label for="title">Title</label>
             <input type="text" class="form-control" id="title" name="title" placeholder="Enter Event title">
-            <span id="error_block"></span>
+            <small id="title_error_block" class="text-danger"></small>
           </div>
           <div class="form-group">
             <label for="start_time">Start Time</label>
             <input type="datetime-local" class="form-control" id="start_time" name="start_time">
+            <small id="start_error_block" class="text-danger"></small>
           </div>
           <div class="form-group">
             <label for="end_time">End Time</label>
             <input type="datetime-local" class="form-control" id="end_time" name="end_time">
+            <small id="end_error_block" class="text-danger"></small>
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -87,18 +89,31 @@
       selectable: true,
       selectHelper: true,
       select: function(start, end, allDay) {
+        start=moment(start).format('YYYY-MM-DDTHH:mm'); 
+        end=moment(end).format('YYYY-MM-DDTHH:mm');
+        $("#start_time").val(start.toString());
+        $("#end_time").val(end.toString());
         $("#insert_modal").modal("show");
+        
         $( "#insert_modal" ).submit(function( e ) {
           e.preventDefault();
           var title = $('#title').val().trim();
-          if(!title){
-            $('#error_block').html('Enter the Event Name');
-          }
           var start_time = $('#start_time').val();
           var end_time = $('#end_time').val();
+          var flag = 0;
           start=moment(start_time).format('YYYY-MM-DDTHH:mm:ssZ'); 
-          end=moment(end_time).format('YYYY-MM-DDTHH:mm:ssZ'); 
-          if(title) {
+          end=moment(end_time).format('YYYY-MM-DDTHH:mm:ssZ');
+
+          if(!title){
+            $('#title_error_block').html('Enter the Event Name');
+            flag = 1;
+          }
+          if(moment(start_time).toDate().getTime() > moment(end_time).toDate().getTime()){
+            $('#end_error_block').html('End Time is less than Start Time');
+            flag = 1;
+          }
+
+          if(!flag) {
             $.ajax({
               url: "{{ url_for('calendar.insert_event') }}",
               type: "POST",
@@ -107,6 +122,13 @@
                 $("#insert_modal").modal("hide");
                 calendar.fullCalendar('refetchEvents');
                 window.location.replace("{{ url_for('calendar.calendar_view') }}");
+              },
+              statusCode: {
+                403: function () {
+                    $("#insert_modal").modal("hide");
+                    alert('Not Authorized');
+                    //window.location.replace("url_for(errors.app_errorhandler(404))");
+                }
               }
             })
           }
@@ -124,6 +146,12 @@
           data: {title:title, start:start, end:end, id:id},
           success:function() {
             calendar.fullCalendar('refetchEvents');
+          },
+          statusCode: {
+            403: function () {
+                alert('Not Authorized');
+                //window.location.replace("url_for(errors.app_errorhandler(404))");
+            }
           }
         })
       },
@@ -138,6 +166,12 @@
           data: {title:title, start:start, end:end, id:id},
           success: function() {
             calendar.fullCalendar('refetchEvents');
+          },
+          statusCode: {
+            403: function () {
+                alert('Not Authorized');
+                //window.location.replace("url_for(errors.app_errorhandler(404))");
+            }
           }
         });
       },
@@ -155,6 +189,12 @@
               calendar.fullCalendar('refetchEvents');
               $('#delete_modal').modal("hide");
               window.location.replace("{{ url_for('calendar.calendar_view') }}");
+            },
+            statusCode: {
+              403: function () {
+                  alert('Not Authorized');
+                  //window.location.replace("url_for(errors.app_errorhandler(404))");
+              }
             }
           })
         });
