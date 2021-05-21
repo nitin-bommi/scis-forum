@@ -19,3 +19,9 @@
 
 ## References
 * Base - https://github.com/CoreyMSchafer/code_snippets/tree/master/Python/Flask_Blog
+
+## Accessing database
+* Go to python shell in scis-forum directory
+* `from scisforum import db, create_app `
+* `from scisforum.models import Post`
+
