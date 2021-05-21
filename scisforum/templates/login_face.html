@@ -18,12 +18,12 @@
                     {{ form.username(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
-            <div class="form-group">
+            <div class="form-group text-center">
                 <video id="stream" width="370" height="320">
                     <canvas id="capture" width="370" height="320">
                     </canvas>
-                </video>
-                <button id="btn-capture" type="button" class="btn btn-primary justify-content-center">Capture Image</button>
+                </video><br>
+                <button id="btn-capture" type="button" class="btn button-outline">Capture Image</button>
                 <br><br>
                 <div id="snapshot"></div>
                 <input type="hidden" id="face_img" name="face_img">
@@ -34,13 +34,13 @@
             </div>
         </fieldset>
         <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
+            {{ form.submit(class="btn button-outline") }}
         </div>
     </form>
 </div>
 <div class="border-top pt-3">
     <small class="text-muted">
-        Need An Account? <a class="ml-2" href="{{ url_for('users.register') }}">Sign Up Now</a>
+        Need An Account? <a class="ml-2 link-color" href="{{ url_for('users.register') }}">Sign Up Now</a>
     </small>
 </div>
 {% endblock content %}
