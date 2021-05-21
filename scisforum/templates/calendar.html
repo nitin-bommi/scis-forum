@@ -9,7 +9,7 @@
   <div id="calendar"></div>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="insert_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -19,12 +19,39 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="">
+        <form action="" method="POST">
           <div class="form-group">
             <label for="title">Title</label>
             <input type="text" class="form-control" id="title" name="title" placeholder="Enter Event title">
+            <span id="error_block"></span>
+          </div>
+          <div class="form-group">
+            <label for="start_time">Start Time</label>
+            <input type="datetime-local" class="form-control" id="start_time" name="start_time">
+          </div>
+          <div class="form-group">
+            <label for="end_time">End Time</label>
+            <input type="datetime-local" class="form-control" id="end_time" name="end_time">
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="event_title"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <form action="" method="POST">
+          <button type="submit" class="btn btn-primary" id="delete">Delete</button>
         </form>
       </div>
     </div>
@@ -44,31 +71,46 @@
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay'
+        right:''
       },
       events: [
         {% for row in events %}
           { id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', }, 
         {% endfor %}
       ],
+      eventLimit: 3,
+      views: {
+        month: {
+          eventLimit: 3
+        }
+      },
       selectable: true,
       selectHelper: true,
       select: function(start, end, allDay) {
-        $("#exampleModal").modal("show");
-        var title = prompt("Enter Event Title");
-        if(title) {
-          start=moment(start).format('YYYY-MM-DDTHH:mm:ssZ'); 
-          end=moment(end).format('YYYY-MM-DDTHH:mm:ssZ'); 
-          var u = "{{ url_for('calendar.insert_event') }}";
-          $.ajax({
-            url: "{{ url_for('calendar.insert_event') }}",
-            type: "POST",
-            data: {title:title, start:start, end:end},
-            success: function(){
-              window.location.replace("/calendar");
-            }
-          })
-        }
+        $("#insert_modal").modal("show");
+        $( "#insert_modal" ).submit(function( e ) {
+          e.preventDefault();
+          var title = $('#title').val().trim();
+          if(!title){
+            $('#error_block').html('Enter the Event Name');
+          }
+          var start_time = $('#start_time').val();
+          var end_time = $('#end_time').val();
+          start=moment(start_time).format('YYYY-MM-DDTHH:mm:ssZ'); 
+          end=moment(end_time).format('YYYY-MM-DDTHH:mm:ssZ'); 
+          if(title) {
+            $.ajax({
+              url: "{{ url_for('calendar.insert_event') }}",
+              type: "POST",
+              data: {title:title, start:start, end:end},
+              success: function(){
+                $("#insert_modal").modal("hide");
+                calendar.fullCalendar('refetchEvents');
+                window.location.replace("{{ url_for('calendar.calendar_view') }}");
+              }
+            })
+          }
+        });
       },
       editable: true,
       eventResize: function(event) {
@@ -100,8 +142,10 @@
         });
       },
       eventClick: function(event) {
-        $('#exampleModal').modal('show');
-        if(confirm("Are you sure you want to remove it?")) {
+        $('#event_title').html(event.title);
+        $('#delete_modal').modal("show");
+        $( "#delete_modal" ).submit(function( e) {
+          e.preventDefault();
           var id = event.id;
           $.ajax({
             url: "{{ url_for('calendar.delete_event') }}",
@@ -109,10 +153,11 @@
             data: {id:id},
             success: function() {
               calendar.fullCalendar('refetchEvents');
-              window.location.replace("/calendar");
+              $('#delete_modal').modal("hide");
+              window.location.replace("{{ url_for('calendar.calendar_view') }}");
             }
           })
-        }
+        });
       }
     });
   });
