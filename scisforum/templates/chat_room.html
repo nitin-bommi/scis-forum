@@ -28,11 +28,11 @@
                 {% if user.id != current_user.id %}
                     {% if user.id == receiver %}
                         <a class="text-link" href="{{ user.username }}">
-                            <li class="list-group-item"> {{user.username}} </li>
+                            <li class="list-group-item list-group-item-light"> {{user.username}} </li>
                         </a>
                     {% else %}
                         <a class="text-link" href="{{ user.username }}">
-                            <li class="list-group-item"> {{user.username}} </li>
+                            <li class="list-group-item list-group-item-light"> {{user.username}} </li>
                         </a>
                     {% endif %}
                 {% endif %}
