@@ -24,8 +24,13 @@
   color: #fafafa;
 }
 
-[data-theme="dark"] .heading {
-  color: rgb(255, 255, 255);
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+  color: #ffffff;
 }
 
 [data-theme="dark"] .dark-heading{
@@ -89,12 +94,22 @@
   border: 1px solid #ffcd36;
 }
 
-[data-theme="dark"] .button-outline:hover, .button-outline:active{
+[data-theme="dark"] .button-outline:hover, [data-theme="dark"] .button-outline:active{
   color: #000;
   background-color: #ffcd36;
 }
 
-[data-theme="dark"] .btn-pagination, .btn-pagination:active, .btn-pagination:hover{
+[data-theme="dark"] .btn-pagination{
+  background-color: #ffcd36;
+  color: #000;
+}
+
+[data-theme="dark"] .btn-pagination:active{
+  background-color: #ffcd36;
+  color: #000;
+}
+
+[data-theme="dark"] .btn-pagination:hover{
   background-color: #ffcd36;
   color: #000;
 }
@@ -105,7 +120,12 @@
   border: 1px solid #ffcd36;
 }
 
-[data-theme="dark"] .btn-pagination-outline:active, .btn-pagination-outline:hover{
+[data-theme="dark"] .btn-pagination-outline:active{ 
+  background-color: #ffcd36;
+  color: #000;
+}
+
+[data-theme="dark"] .btn-pagination-outline:hover{
   background-color: #ffcd36;
   color: #000;
 }
