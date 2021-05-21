@@ -16,8 +16,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        encoding_file = image_to_encoding(request.form['face_img'], form.username.data)
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password, encoding_file=encoding_file)
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         flash(f'Account created. You can now login.', 'success')
@@ -53,6 +52,9 @@ def login_face():
     form = FaceLoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
+        if user.face_access == False:
+            flash('Your face is not yet registered. Please register in account.', 'danger')
+            return redirect(url_for('users.login_password'))
         if user and verify_face(user.encoding_file, request.form['face_img']):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
@@ -70,6 +72,7 @@ def update_face(user_id):
         abort(403)
     if request.method == 'POST':
         encoding_file = image_to_encoding(request.form['face_img'], user.username)
+        user.face_access = True
         user.encoding_file = encoding_file
         db.session.add(user)
         db.session.commit()
