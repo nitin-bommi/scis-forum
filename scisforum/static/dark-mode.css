@@ -66,7 +66,6 @@
 
 [data-theme="dark"] a.article-title:hover {
   color: #ffcd36;
-  text-decoration: none;
 }
 
 [data-theme="dark"] .article-metadata {
