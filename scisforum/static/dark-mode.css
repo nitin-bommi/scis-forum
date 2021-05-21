@@ -24,13 +24,8 @@
   color: #fafafa;
 }
 
-[data-theme="dark"] h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: #fafafa;
+[data-theme="dark"] .heading {
+  color: rgb(255, 255, 255);
 }
 
 [data-theme="dark"] .dark-heading{
@@ -48,11 +43,15 @@ h6 {
 [data-theme="dark"] .site-header .navbar-nav .nav-link:hover {
   color: #000;
   background-color: #f5d574;
+  border-radius: 20px;
 }
 
 [data-theme="dark"] .content-section {
   background: #1d1a1a;
+  padding: 10px 20px;
   border: 1px solid #4e4c4c;
+  border-radius: 3px;
+  margin-bottom: 20px;
 }
 
 [data-theme="dark"] .list-group-item-light{
@@ -67,14 +66,18 @@ h6 {
 
 [data-theme="dark"] a.article-title:hover {
   color: #ffcd36;
+  text-decoration: none;
 }
 
 [data-theme="dark"] .article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
   border-bottom: 1px solid #4e4c4c;
 }
 
 [data-theme="dark"] .article-metadata a:hover {
   color: #f5f2ca;
+  text-decoration: none;
 }
 
 [data-theme="dark"] .link-color{
@@ -110,37 +113,58 @@ h6 {
 
 [data-theme="dark"] .date{
   color: #ffcd36;
+  font-size: x-large;
+  padding: 10px;
 }
 
 [data-theme="dark"] .chat{
     background: #1d1a1a;
+    padding: 0px;
 }
 
 [data-theme="dark"] .chat-user-list{
   background-color: #1d1a1a;
+  margin: 0px;
+  padding: 0px;
   border: 1px solid #4e4c4c;
 }
 
 [data-theme="dark"] .chat-user-list-heading{
+  text-align: center;
   background-color: #333030;
+  font-size: 18px;
   color: #fff;
+  padding: 10px;
 }
 
 [data-theme="dark"] .chat-heading{
+  text-align: center;
   background-color: #333030;
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 8px;
+  padding: 10px;
 }
 
 [data-theme="dark"] .personal-chat{
   background-color: #1d1a1a;
+  margin: 0px;
+  padding: 0px;
   border: 1px solid #4e4c4c;
 }
 
 [data-theme="dark"] .to-text{
   background-color: #ffcd36;
   color: #000;
+  margin: 1px 0;
+  padding: 6px 12px; 
+  border-radius: 8px;
 }
 
 [data-theme="dark"] .from-text{
   background-color: #eee676;
   color: #000;
+  margin: 1px 0;
+  padding: 6px 12px;
+  border-radius: 8px;
 }
