@@ -2,7 +2,7 @@ import dateutil.parser as dt
 from flask import render_template, url_for, flash, redirect, request, abort, Blueprint
 from flask_login import current_user, login_required
 from scisforum import db
-from scisforum.models import Event
+from scisforum.models import Event, User
 
 calendar = Blueprint('calendar', __name__)
 
@@ -10,7 +10,7 @@ calendar = Blueprint('calendar', __name__)
 @calendar.route('/calendar', methods=['GET', 'POST'])
 @login_required
 def calendar_view():
-    events = Event.query.all()
+    events = Event.query.join(User, User.id==Event.creator_id).add_columns(Event.id, Event.title, Event.start_time, Event.end_time, User.username).all()
     return render_template('calendar.html', title='Calendar', events=events)
 
 

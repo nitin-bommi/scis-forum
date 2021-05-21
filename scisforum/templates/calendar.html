@@ -51,6 +51,10 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <div class="modal-body">
+        <h5 id="creator">Created by: </h5>
+        <h6 id="time"></h6>
+      </div>
       <div class="modal-footer">
         <form action="" method="POST">
           <button type="submit" class="btn btn-primary" id="delete">Delete</button>
@@ -63,8 +67,8 @@
 
 {% block script %}
 <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
-<!--<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
-<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>-->
+<!-- <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
+<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script> -->
 <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 <script>
   $(document).ready(function() {
@@ -77,7 +81,7 @@
       },
       events: [
         {% for row in events %}
-          { id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', }, 
+          { id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', creator : '{{row.username}}'}, 
         {% endfor %}
       ],
       eventLimit: 3,
@@ -86,6 +90,7 @@
           eventLimit: 3
         }
       },
+      displayEventTime : false,
       selectable: true,
       selectHelper: true,
       select: function(start, end, allDay) {
@@ -176,8 +181,13 @@
         });
       },
       eventClick: function(event) {
+        var start = moment(event.start).format('DD/MM/YYYY HH:mm:ss'); 
+        var end = moment(event.end).format('DD/MM/YYYY HH:mm:ss'); 
         $('#event_title').html(event.title);
+        $('#creator').html(`Created By: ${event.creator}`);
+        $('#time').html(`Time: ${start} - ${end}`);
         $('#delete_modal').modal("show");
+
         $( "#delete_modal" ).submit(function( e) {
           e.preventDefault();
           var id = event.id;
