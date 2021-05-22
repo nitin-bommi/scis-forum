@@ -4,7 +4,7 @@
     <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
     <div class="media-body">
       <div class="article-metadata d-flex justify-content-between p-3">
-        <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+        <a class="mr-2 link-color" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
         <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
       </div>
       {% if post.author == current_user %}
@@ -24,7 +24,7 @@
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
+      <div class="modal-content dark-modal">
         <div class="modal-header">
           <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">

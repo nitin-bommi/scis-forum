@@ -160,7 +160,7 @@
 }
 
 [data-theme="dark"] .from-text{
-  background-color: #eee676;
+  background-color: #f0857d;
   color: #000;
   margin: 1px 0;
   padding: 6px 12px;
@@ -171,4 +171,12 @@
   background-color: #000000;
   color: #ffffff;
   border: 1px solid #292727;
+}
+
+[data-theme="dark"] .dark-modal{
+  background: #1d1a1a;
+  border: 1px solid #4e4c4c;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  color: #ffffff;
 }
