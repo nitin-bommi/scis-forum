@@ -14,7 +14,7 @@ posts = Blueprint('posts', __name__)
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        if predict_prob([form.content.data]) > 0.4:
+        if predict_prob([form.content.data]) > 0.4 or predict_prob([form.title.data]) > 0.4:
             flash('Your post contains inappropriate words. Please filter out them.', 'danger')
             return redirect(url_for('posts.new_post'))
         post = Post(title=form.title.data, content=form.content.data, author=current_user)
@@ -40,7 +40,7 @@ def update_post(post_id):
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
-        if predict_prob([form.content.data]) > 0.4:
+        if predict_prob([form.content.data]) > 0.4 or predict_prob([form.title.data]) > 0.4:
             flash('Your post contains inappropriate words. Please filter out them.', 'danger')
             return redirect(url_for('posts.new_post'))
         post.title = form.title.data
