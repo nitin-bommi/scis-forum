@@ -41,3 +41,22 @@
     </div>
   </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+  $(document).ready(function(){
+    var data = `{{post.content}}`;
+
+      var regex = /https?:\/\/[\-A-Za-z0-9+&@#\/%?=~_|$!:,.;]*/g;
+      if(data.match(regex)){
+        var l = new String(data.match(regex));
+        var index = data.search(l);
+        var result = data.substr(0, index) + l.link(l) + data.substr(index + l.length+1);
+        $(`.article-content`).html(result);
+      }
+    console.log(data);
+  });
+</script>
+  
+  
+{% endblock %}

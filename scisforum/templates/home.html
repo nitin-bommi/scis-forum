@@ -43,13 +43,11 @@
       for(var i=0;i<data.length;i++){
         if(data[i]['content'].match(regex)){
           var l = new String(data[i]['content'].match(regex));
-          var index = data[i]['content'].search(data[i]['content'].match(regex));
-          var length = l.length;
-          var result = data[i]['content'].substr(0, index) + l.link(l) + data[i]['content'].substr(index+length+1);
+          var index = data[i]['content'].search(l);
+          var result = data[i]['content'].substr(0, index) + l.link(l) + data[i]['content'].substr(index + l.length+1);
           $(`#${data[i]['id']} .article-content`).html(result);
         }
       }
-    console.log(data);
   });
 </script>
   
