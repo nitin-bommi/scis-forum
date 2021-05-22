@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1 class="mb-3">Posts by {{ user.username }}</h1>
+    <h1 class="mb-3">Posts by <a class="mr-2 link-color article-title" href="{{ url_for('chats.chatting', username=user.username) }}">{{ user.username }}</a></h1>
     <h3 class="mb-3">Fetched {{ posts.total }} posts</h3>
-    <button class="btn btn-pagination-outline"><a href="{{ url_for('chats.chatting', username=user.username) }}">Appreciate</a></button>
     {% for post in posts.items %}
         <article class="media content-section">
           <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
