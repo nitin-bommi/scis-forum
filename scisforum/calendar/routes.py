@@ -23,7 +23,7 @@ def insert_event():
         title = request.form['title']
         start_time = dt.parse(request.form['start'])
         end_time = dt.parse(request.form['end'])
-        old_event = Event.query.find_by(title = title, start_time = start_time, end_time = end_time).first()
+        old_event = Event.query.filter_by(title = title, start_time = start_time, end_time = end_time).first()
         if not(old_event):
             event = Event(title=title, start_time=start_time, end_time=end_time, creator_id=current_user.id)
             db.session.add(event)
