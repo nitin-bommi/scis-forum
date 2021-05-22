@@ -180,3 +180,17 @@
   margin-bottom: 20px;
   color: #ffffff;
 }
+
+[data-theme="dark"] .fc-today {
+  background: #000000 !important;
+  color: #ffffff;
+  border-left: 1px solid #ffffff  !important;
+  border-top: 1px solid #ffffff !important;
+}
+
+[data-theme="dark"] .fc-state-highlight {
+  background: #000000 !important;
+  color: #ffffff;
+  border-left: 1.75px solid #ffffff  !important;
+  border-top: 1px solid #ffffff !important;
+}

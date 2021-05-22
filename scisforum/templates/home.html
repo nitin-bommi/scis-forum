@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+
 {% block content %}
     {% for post in posts.items %}
-        <article class="media content-section">
+        <article class="media content-section" id='{{post.id}}'>
           <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
           <div class="media-body">
             <div class="article-metadata d-flex justify-content-between p-3">
@@ -10,7 +11,7 @@
             </div>
             <div class="p-2">
               <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
-              <p class="article-content">{{ post.content }}</p>
+              <p class="article-content" >{{ post.content }}</p>
             </div>
           </div>
         </article>
@@ -29,3 +30,31 @@
       {% endfor %}
     </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+  $(document).ready(function(){
+    var data = [
+      {% for post in posts.items %}
+        {id: '{{post.id}}', content: `'{{post.content}}'`, },
+      {% endfor %}];
+
+      var regex = /https?:\/\/[\-A-Za-z0-9+&@#\/%?=~_|$!:,.;]*/g;
+      for(var i=0;i<data.length;i++){
+        if(data[i]['content'].match(regex)){
+          var l = new String(data[i]['content'].match(regex));
+          var index = data[i]['content'].search(data[i]['content'].match(regex));
+          var length = l.length;
+          var result = data[i]['content'].substr(0, index) + l.link(l) + data[i]['content'].substr(index+length+1);
+          $(`#${data[i]['id']} .article-content`).html(result);
+        }
+      }
+    console.log(data);
+  });
+</script>
+  
+  
+{% endblock %}
+
+
+
