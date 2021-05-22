@@ -17,11 +17,18 @@
   * `python app.py` - for windows
   * `python3 app.py` - for ubuntu 
 
+## Adding environment variables
+### Windows
+* Navigate to system environment variables from the control panel.
+* Add the variables and corresponding values
+  * `EMAIL_USER`
+  * `EMAIL_PASS`
+
 ## Accessing database
 * Go to python shell in scis-forum directory
 * `from scisforum import db, create_app`
 * `app = create_app()`
 * `app.app_context().push()`
-* `db.create_all()` (When you add a table)
+* `db.create_all()` - when you add a table)
 * Do your stuff
 
