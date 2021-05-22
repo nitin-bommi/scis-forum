@@ -35,13 +35,13 @@
         {% endif %}
       </div>
     </fieldset>
+    <div class="form-group">
+      {{ form.submit(class="btn btn-outline-info button-outline") }}
+    </div>
   </form>
-  <div class="form-group">
-    {{ form.submit(class="btn btn-outline-info button-outline") }}
-    <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#faceModal">
-      Update Face Data
-    </button>
-  </div>
+  <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#faceModal">
+    Update Face Data
+  </button>
 </div>
 
 <div class="modal fade" id="faceModal" tabindex="-1" role="dialog" aria-labelledby="faceModalLabel" aria-hidden="true">
