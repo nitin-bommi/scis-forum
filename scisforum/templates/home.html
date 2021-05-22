@@ -36,7 +36,7 @@
   $(document).ready(function(){
     var data = [
       {% for post in posts.items %}
-        {id: '{{post.id}}', content: `'{{post.content}}'`, },
+        {id: '{{post.id}}', content: `{{post.content}}`, },
       {% endfor %}];
 
       var regex = /https?:\/\/[\-A-Za-z0-9+&@#\/%?=~_|$!:,.;]*/g;
