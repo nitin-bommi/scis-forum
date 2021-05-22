@@ -167,6 +167,12 @@
   border-radius: 8px;
 }
 
+[data-theme="dark"] .dark-bg{
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #292727;
+}
+
 /* .dark {
   background-color: #000 !important;
   color: #fff;
