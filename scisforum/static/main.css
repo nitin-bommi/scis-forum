@@ -287,3 +287,10 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.fc-state-highlight {
+  background: #dae9f3 !important;
+  color: #000000;
+  border-left: 1.75px solid #ffffff  !important;
+  border-top: 1px solid #ffffff !important;
+}

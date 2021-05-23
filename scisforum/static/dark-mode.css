@@ -182,15 +182,15 @@
 }
 
 [data-theme="dark"] .fc-today {
-  background: #000000 !important;
+  background: #272626 !important;
   color: #ffffff;
   border-left: 1px solid #ffffff  !important;
   border-top: 1px solid #ffffff !important;
 }
 
 [data-theme="dark"] .fc-state-highlight {
-  background: #000000 !important;
-  color: #ffffff;
+  background: #FCF8E3 !important;
+  color: #000000;
   border-left: 1.75px solid #ffffff  !important;
   border-top: 1px solid #ffffff !important;
 }
