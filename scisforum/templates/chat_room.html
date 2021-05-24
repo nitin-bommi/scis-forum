@@ -1,47 +1,35 @@
 {% extends "base.html" %}
+
 {% block content %}
-
-<script>
-    function ajax(){
-        var req = new XMLHttpRequest();
-        req.onreadystatechange = function(){
-            if(req.readyState == 4 && req.status == 200)
-            {
-            document.getElementById('chats').innerHTML = req.responseText;
-            
-            }
-        }
-        req.open('POST', '/chats/{{ receiver }}', true);
-        req.send();
-    }
-    
-    setInterval(function(){ajax()}, 10);
-</script>
-
 <div class="chat row">
     <div class="col-sm-5 chat-user-list">
         <div class="container chat-user-list-heading">
             <span>Users Chart</span>
         </div>
+        <div>
+            <form action="">
+                <input type="text" id="chat_person">
+                <button class="btn btn-primary">Search</button>
+            </form>
+        </div>
         <ul class="list-group">
+            {% if(receiver != current_user.username) %}
+                <a class="text-link" href="{{ receiver }}">
+                    <li class="list-group-item list-group-item-light"> {{receiver}} </li>
+                </a>
+            {% endif %}
             {% for user in users %}
-                {% if user.id != current_user.id %}
-                    {% if user.id == receiver %}
-                        <a class="text-link" href="{{ user.username }}">
-                            <li class="list-group-item list-group-item-light"> {{user.username}} </li>
-                        </a>
-                    {% else %}
-                        <a class="text-link" href="{{ user.username }}">
-                            <li class="list-group-item list-group-item-light"> {{user.username}} </li>
-                        </a>
-                    {% endif %}
+                {% if user.id != current_user.id and user.username != receiver %}
+                    <a class="text-link" href="{{ user.username }}">
+                        <li class="list-group-item list-group-item-light"> {{user.username}} </li>
+                    </a>
                 {% endif %}
             {% endfor %}
         </ul>
     </div>
-    <script>
+    <!-- <script>
        ajax();
-    </script>
+    </script> -->
     <div class="col-sm-7 personal-chat">
             {% if(receiver!=current_user.username) %}
                 <div class="container chat-heading">
@@ -67,3 +55,56 @@
     <div class="col-xs-1"></div>
 </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+    $('#chat_person').keyup(function(){
+        let val = $('#chat_person').val();
+        let users = [
+            {% for user in users %}
+                {% if user.id != current_user.id %}
+                    '{{user.username}}',
+                {%endif%}
+            {%endfor%}
+            ];
+        var regex = new RegExp(`^${val}`);
+        let s_html = '';
+        for(var i=0;i<users.length; i++){
+            if(users[i].match(regex)){
+                s_html += `<a class="text-link" href="${users[i]}">
+                        <li class="list-group-item list-group-item-light"> ${users[i]} </li>
+                    </a>`;
+            }
+        }
+        $('.list-group').html(s_html);
+    });
+</script>
+<script>
+    function ajax(){
+        $.ajax({
+            url: '/chats/{{ receiver }}',
+            type: 'POST',
+            success:function(data){
+                document.getElementById('chats').innerHTML = data;
+            }
+        });
+    }
+    $(document).ready(function(){
+        setInterval(ajax,10);
+    });
+    // function ajax1(){
+    //     var req = new XMLHttpRequest();
+    //     req.onreadystatechange = function(){
+    //         if(req.readyState == 4 && req.status == 200)
+    //         {
+    //         document.getElementById('chats').innerHTML = req.responseText;
+            
+    //         }
+    //     }
+    //     req.open('POST', '/chats/{{ receiver }}', true);
+    //     req.send();
+    // }
+    
+    // setInterval(function(){ajax()}, 10);
+</script>
+{% endblock %}
