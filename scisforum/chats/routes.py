@@ -21,8 +21,15 @@ def chatting(username):
         message = Message(msg_by_id=current_user.id, msg_to_id=user.id, body=form.body.data)
         db.session.add(message)
         db.session.commit()
-    users = User.query.all()
-    return render_template('chat_room.html', users=users, form=form, receiver=username)
+    existing = Message.query.join(User, or_(User.id == Message.msg_by_id, User.id == Message.msg_to_id)).add_columns(User.username).filter(or_(Message.msg_by_id == current_user.id, Message.msg_to_id == current_user.id)).order_by(Message.msg_time.desc())
+    unique = []
+    for user in existing:
+        if user.username != current_user.username and user.username not in unique:
+            unique.append(user.username)
+    users = User.query.filter(User.username.notin_([*unique, current_user.username]))
+    for user in users:
+        unique.append(user.username)
+    return render_template('chat_room.html', users=unique, form=form, receiver=username)
 
 
 @chats.route('/chats/<string:username>', methods=['GET', 'POST'])

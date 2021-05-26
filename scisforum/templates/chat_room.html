@@ -8,8 +8,7 @@
         </div>
         <div>
             <form action="">
-                <input type="text" id="chat_person">
-                <button class="btn btn-primary">Search</button>
+                <input type="text" id="chat_person" placeholder="Search Name" class="form-control">
             </form>
         </div>
         <ul class="list-group">
@@ -19,17 +18,14 @@
                 </a>
             {% endif %}
             {% for user in users %}
-                {% if user.id != current_user.id and user.username != receiver %}
-                    <a class="text-link" href="{{ user.username }}">
-                        <li class="list-group-item list-group-item-light"> {{user.username}} </li>
+                {% if user != current_user.username and user != receiver and users.index(user) <= 10 %}
+                    <a class="text-link" href="{{ user }}">
+                        <li class="list-group-item list-group-item-light"> {{user}} </li>
                     </a>
                 {% endif %}
             {% endfor %}
         </ul>
     </div>
-    <!-- <script>
-       ajax();
-    </script> -->
     <div class="col-sm-7 personal-chat">
             {% if(receiver!=current_user.username) %}
                 <div class="container chat-heading">
@@ -62,15 +58,17 @@
         let val = $('#chat_person').val();
         let users = [
             {% for user in users %}
-                {% if user.id != current_user.id %}
-                    '{{user.username}}',
+                {% if user != current_user.username %}
+                    '{{user}}',
                 {%endif%}
             {%endfor%}
             ];
-        var regex = new RegExp(`^${val}`);
+        var regex = new RegExp(`^${val}`, 'i');
         let s_html = '';
-        for(var i=0;i<users.length; i++){
-            if(users[i].match(regex)){
+        let flag=0;
+        for(let i=0;i<users.length; i++){
+            if(users[i].match(regex) && flag < 10){
+                flag++;
                 s_html += `<a class="text-link" href="${users[i]}">
                         <li class="list-group-item list-group-item-light"> ${users[i]} </li>
                     </a>`;
@@ -92,19 +90,5 @@
     $(document).ready(function(){
         setInterval(ajax,10);
     });
-    // function ajax1(){
-    //     var req = new XMLHttpRequest();
-    //     req.onreadystatechange = function(){
-    //         if(req.readyState == 4 && req.status == 200)
-    //         {
-    //         document.getElementById('chats').innerHTML = req.responseText;
-            
-    //         }
-    //     }
-    //     req.open('POST', '/chats/{{ receiver }}', true);
-    //     req.send();
-    // }
-    
-    // setInterval(function(){ajax()}, 10);
 </script>
 {% endblock %}
