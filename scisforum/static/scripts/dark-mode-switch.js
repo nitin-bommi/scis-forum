@@ -27,35 +27,3 @@ function resetTheme() {
     localStorage.removeItem("darkSwitch");
   }
 }
-
-
-
-
-// $(window).ready(function () {
-//   console.log("ready!");
-//   console.log(localStorage.getItem('theme'));
-//   if (localStorage.getItem('theme') == 'dark') {
-//     $("body").addClass("dark");
-//     $(".inner-switch").text("ON");
-//     $("#theme-link").attr("href", "{{ url_for('static', filename='dark-mode.css') }}");
-//   }
-//   else {
-//     $("body").removeClass("dark");
-//     $(".inner-switch").text("OFF");
-//     $("#theme-link").attr("href", "{{ url_for('static', filename='main.css') }}");
-//   }
-//   $(".inner-switch").on("click", function () {
-//     if ($("body").hasClass("dark")) {
-//       $("body").removeClass("dark");
-//       $(".inner-switch").text("OFF");
-//       localStorage.setItem('theme', 'light');
-//       $("#theme-link").attr("href", "{{ url_for('static', filename='main.css') }}");
-//     } else {
-//       $("body").addClass("dark");
-//       $(".inner-switch").text("ON");
-//       localStorage.setItem('theme', 'dark');
-//       $("#theme-link").attr("href", "{{ url_for('static', filename='dark-mode.css') }}");
-//     }
-//   });
-// });
-
