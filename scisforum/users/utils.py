@@ -43,20 +43,20 @@ def image_to_encoding(image, username):
     sbuf = BytesIO()
     sbuf.write(base64.b64decode(image[22:]))
     img = Image.open(sbuf)
-    
+
     img = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2RGB)
     img_enc = face_recognition.face_encodings(img)[0]
     if img_enc.size == 0:
         return False
     np.save(encoding_path, img_enc)
-    
+
     return file_path
 
 
 def verify_face(encoding_file, image):
     encoding_path = os.path.join(current_app.root_path, 'static/encodings', encoding_file)
     face_encodings_for_id = np.load(encoding_path, allow_pickle=True)
-    
+
     sbuf = BytesIO()
     sbuf.write(base64.b64decode(image[22:]))
     img = Image.open(sbuf)
@@ -68,7 +68,7 @@ def verify_face(encoding_file, image):
 
     harcascadePath = os.path.join(current_app.root_path, 'models/haarcascade_frontalface_default.xml')
     face_detector = cv2.CascadeClassifier(harcascadePath)
-    
+
     faces = face_detector.detectMultiScale(
         gray,
         scaleFactor=1.2,

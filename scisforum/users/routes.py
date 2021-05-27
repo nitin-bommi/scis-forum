@@ -74,12 +74,15 @@ def update_face(user_id):
     if user_id != user.id:
         abort(403)
     if request.method == 'POST':
-        encoding_file = image_to_encoding(request.form['face_img'], user.username)
-        user.face_access = True
-        user.encoding_file = encoding_file
-        db.session.add(user)
-        db.session.commit()
-        flash(f'Face data updated successfully.', 'success')
+        try:
+            encoding_file = image_to_encoding(request.form['face_img'], user.username)
+            user.face_access = True
+            user.encoding_file = encoding_file
+            db.session.add(user)
+            db.session.commit()
+            flash(f'Face data updated successfully.', 'success')
+        except:
+            flash('Face not recognized.', 'danger')
         return redirect(url_for('users.account'))
 
 
