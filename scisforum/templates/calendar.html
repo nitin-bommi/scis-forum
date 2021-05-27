@@ -6,12 +6,12 @@
 
 {% block content %}
 <div class="container">
-    <div id="calendar"></div>
+  <div id="calendar"></div>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="insert_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content dark-modal">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Event Title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -19,14 +19,49 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="">
+        <form action="" method="POST">
           <div class="form-group">
             <label for="title">Title</label>
             <input type="text" class="form-control" id="title" name="title" placeholder="Enter Event title">
+            <small id="title_error_block" class="text-danger"></small>
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="form-group">
+            <label for="start_time">Start Time</label>
+            <input type="datetime-local" class="form-control" id="start_time" name="start_time">
+            <small id="start_error_block" class="text-danger"></small>
+          </div>
+          <div class="form-group">
+            <label for="end_time">End Time</label>
+            <input type="datetime-local" class="form-control" id="end_time" name="end_time">
+            <small id="end_error_block" class="text-danger"></small>
+          </div>
+          <button type="submit" class="btn button-outline">Submit</button>
         </form>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content dark-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="event_title"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 id="creator">Created by: </h5>
+        <h6 id="time"></h6>
+      </div>
+      {%if current_user.access %}
+        <div class="modal-footer">
+          <form action="" method="POST">
+            <button type="submit" class="btn button-outline" id="delete">Delete</button>
+          </form>
+        </div>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -34,83 +69,161 @@
 
 {% block script %}
 <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
-<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
-<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>
+<!-- <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
+<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script> -->
 <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 <script>
+  function toBool(){
+    if('{{current_user.access}}' === 'True'){
+      return true;
+    }
+    return false;
+  }
   $(document).ready(function() {
-   var calendar = $('#calendar').fullCalendar({
-      editable:true,
-      header:{
-      left:'prev,next today',
-      center:'title',
-      right:'month,agendaWeek,agendaDay'
+    var calendar = $('#calendar').fullCalendar({
+      editable: true,
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right:''
       },
-      events: [{% for row in events %}{ id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', }, {% endfor %}],
-      selectable : true,
-      selectHelper : true,
-      select : function(start, end, allDay)
-      {
-          //$("#exampleModal").modal("show");
-          var title = prompt("Enter Event Title");
-          if(title){
-              var start = $.fullCalendar.formatDate(start, "Y-MM-DD HH:mm:ss");
-              var end = $.fullCalendar.formatDate(end, "Y-MM-DD HH:mm:ss");
+      displayEventTime : false,
+      events: [
+        {% for row in events %}
+          { id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', creator : '{{row.username}}'}, 
+        {% endfor %}
+      ],
+      eventLimit: 3,
+      views: {
+        month: {
+          eventLimit: 3
+        }
+      },
+      selectable: true,
+      selectHelper: true,
+      select: function(start, end, allDay) {
+        if(toBool()){
+          start=moment(start).format('YYYY-MM-DDTHH:mm'); 
+          end=moment(end).format('YYYY-MM-DDTHH:mm');
+          $("#start_time").val(start.toString());
+          $("#end_time").val(end.toString());
+          $("#insert_modal").modal("show");
+          
+          $( "#insert_modal" ).submit(function( e ) {
+            e.preventDefault();
+            var title = $('#title').val().trim();
+            var start_time = $('#start_time').val();
+            var end_time = $('#end_time').val();
+            var flag = 0;
+            start=moment(start_time).format('YYYY-MM-DDTHH:mm:ssZ'); 
+            end=moment(end_time).format('YYYY-MM-DDTHH:mm:ssZ');
+
+            if(!title){
+              $('#title_error_block').html('Enter the Event Name');
+              flag = 1;
+            }
+            if(moment(start_time).toDate().getTime() > moment(end_time).toDate().getTime()){
+              $('#end_error_block').html('End Time is less than Start Time');
+              flag = 1;
+            }
+
+            if(!flag) {
               $.ajax({
-                  url:"{{ url_for('insert_event') }}",
-                  type:"POST",
-                  data:{title:title, start:start, end:end},
-                  success:function(data){
-                      window.location.replace("{{ url_for('calendar') }}");
+                url: "{{ url_for('calendar.insert_event') }}",
+                type: "POST",
+                data: {title:title, start:start, end:end},
+                success: function(){
+                  $("#insert_modal").modal("hide");
+                  calendar.fullCalendar('refetchEvents');
+                  window.location.replace("{{ url_for('calendar.calendar_view') }}");
+                },
+                statusCode: {
+                  403: function () {
+                      $("#insert_modal").modal("hide");
+                      alert('Not Authorized');
+                      //window.location.replace("url_for(errors.app_errorhandler(404))");
                   }
+                }
               })
-          }
-      },
-      editable : true,
-      eventResize:function(event){
-          var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
-          var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
-          var title = event.title;
-          var id = event.id;
-          $.ajax({
-              url:"{{ url_for('update_event') }}",
-              type:"POST",
-              data:{title:title, start:start, end:end, id:id},
-              success:function(){
-                  calendar.fullCalendar('refetchEvents');
-                  //alert('Event Update');
-              }
-          })
-      },
-      eventDrop : function(event){
-          var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD HH:mm:ss");
-          var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD HH:mm:ss");
-          var title = event.title;
-          var id = event.id;
-          $.ajax({
-              url:"{{ url_for('update_event') }}",
-              type:"POST",
-              data:{title:title, start:start, end:end, id:id},
-              success:function(){
-                  calendar.fullCalendar('refetchEvents');
-              }
+            }
           });
+        }
       },
-      eventClick:function(event){
-          if(confirm("Are you sure you want to remove it?")){
-              var id = event.id;
-              $.ajax({
-                  url:"{{ url_for('delete_event') }}",
-                  type:"POST",
-                  data:{id:id},
-                  success:function(){
-                      calendar.fullCalendar('refetchEvents');
-                      window.location.replace("/calender");
-                  }
-              })
+      editable: toBool(),
+      eventResize: function(event) {
+        start = moment(event.start).format('YYYY-MM-DDTHH:mm:ssZ'); 
+        end = moment(event.end).format('YYYY-MM-DDTHH:mm:ssZ'); 
+        var title = event.title;
+        var id = event.id;
+        $.ajax({
+          url: "{{ url_for('calendar.update_event') }}",
+          type: "POST",
+          data: {title:title, start:start, end:end, id:id},
+          success:function() {
+            calendar.fullCalendar('refetchEvents');
+          },
+          statusCode: {
+            403: function () {
+                alert('Not Authorized');
+                //window.location.replace("url_for(errors.app_errorhandler(404))");
+            }
           }
+        })
       },
-   });
+      eventDrop: function(event) {
+        start = moment(event.start).format('YYYY-MM-DDTHH:mm:ssZ'); 
+        end = moment(event.end).format('YYYY-MM-DDTHH:mm:ssZ');
+        var title = event.title;
+        var id = event.id;  
+        $.ajax({
+          url: "{{ url_for('calendar.update_event') }}",
+          type: "POST",
+          data: {title:title, start:start, end:end, id:id},
+          success: function() {
+            calendar.fullCalendar('refetchEvents');
+          },
+          statusCode: {
+            403: function () {
+                alert('Not Authorized');
+                //window.location.replace("url_for(errors.app_errorhandler(404))");
+            }
+          }
+        });
+      },
+      eventClick: function(event) {
+        var start = moment(event.start).format('DD/MM/YYYY HH:mm:ss'); 
+        var end = moment(event.end).format('DD/MM/YYYY HH:mm:ss'); 
+        $('#event_title').html(event.title);
+        $('#creator').html(`Created By: ${event.creator}`);
+        $('#time').html(`Time: ${start} - ${end}`);
+        $('#delete_modal').modal("show");
+
+        $( "#delete_modal" ).submit(function( e) {
+          e.preventDefault();
+          var id = event.id;
+          $.ajax({
+            url: "{{ url_for('calendar.delete_event') }}",
+            type: "POST",
+            data: {id:id},
+            success: function() {
+              calendar.fullCalendar('refetchEvents');
+              $('#delete_modal').modal("hide");
+              window.location.replace("{{ url_for('calendar.calendar_view') }}");
+            },
+            statusCode: {
+              403: function () {
+                  alert('Not Authorized');
+                  //window.location.replace("url_for(errors.app_errorhandler(404))");
+              }
+            }
+          })
+        });
+      }
+    });
   });
 </script>
 {% endblock %}
+
+
+
+

@@ -1,7 +1,6 @@
-from scisforum import app
-import warnings
+from scisforum import create_app
 
-warnings.filterwarnings('ignore')
+app = create_app()
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -4,12 +4,12 @@
     <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
     <div class="media-body">
       <div class="article-metadata d-flex justify-content-between p-3">
-        <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+        <a class="mr-2 link-color" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
         <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
       </div>
       {% if post.author == current_user %}
         <div class="p-2">
-          <a class="btn btn-outline-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_post', post_id=post.id) }}">Update</a>
+          <a class="btn btn-outline-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
           <button type="button" class="btn btn-outline-danger btn-sm mt-1 mb-1" data-toggle="modal" data-target="#deleteModal">
             Delete
           </button>
@@ -24,7 +24,7 @@
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
+      <div class="modal-content dark-modal">
         <div class="modal-header">
           <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -33,7 +33,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
+          <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
             <input class="btn btn-danger" type="submit" value="Delete">
           </form>
         </div>
@@ -41,3 +41,20 @@
     </div>
   </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+  $(document).ready(function(){
+    var data = `{{post.content}}`;
+      var regex = /https?:\/\/[\-A-Za-z0-9+&@#\/%?=~_|$!:,.;]*/g;
+      if(data.match(regex)){
+        var l = new String(data.match(regex));
+        var index = data.search(l);
+        var result = data.substr(0, index) + l.link(l) + data.substr(index + l.length+1);
+        $(`.article-content`).html(result);
+      }
+  });
+</script>
+  
+  
+{% endblock %}

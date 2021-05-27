@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from scisforum.models import User
 from flask_login import current_user
+from scisforum.models import User
 
 
 class RegistrationForm(FlaskForm):
@@ -43,10 +43,23 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('That email is already taken. Please choose another.')
 
 
-class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired(), Length(min=2, max=100)])
-    content = TextAreaField('Content', validators=[DataRequired(), Length(min=10, max=1000)])
-    submit = SubmitField('Post')
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
 
-class MessageForm(FlaskForm):
-    body = StringField('', validators=[DataRequired(), Length(min=1)], render_kw={'autofocus': True})
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('There is no account with that email. You must register first.')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')
+
+
+class FaceLoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    remember = BooleanField('Remember Me')
+    submit = SubmitField('Log In')

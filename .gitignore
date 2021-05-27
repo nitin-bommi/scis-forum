@@ -2,3 +2,5 @@ venv/
 .vscode/
 **/__pycache__/
 **/profile_pics/
+**/models/data.csv
+**/models/train_model.py

@@ -2,6 +2,7 @@ import pkg_resources
 import numpy as np
 import joblib
 
+
 vectorizer = joblib.load(pkg_resources.resource_filename('scisforum', 'models/vectorizer.joblib'))
 model = joblib.load(pkg_resources.resource_filename('scisforum', 'models/model.joblib'))
 
