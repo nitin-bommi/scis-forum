@@ -15,3 +15,4 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = config.get('MAIL_USERNAME')
     MAIL_PASSWORD = config.get('MAIL_PASSWORD')
+
