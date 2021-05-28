@@ -1,7 +1,7 @@
 from flask import render_template, request, Blueprint, flash, redirect, url_for
-from email_validator import validate_email, EmailNotValidError
+from flask_login import current_user
 from scisforum.models import Post
-from scisforum.main.utils import send_message
+from scisforum.main.utils import send_message, reply_message
 main = Blueprint('main', __name__)
 
 
@@ -20,16 +20,11 @@ def about():
 @main.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
-        email = request.form['email']
         message = request.form['message']
-        try:
-            valid = validate_email(email)
-            email = valid.email
-            if(message == ''):
-                flash('Message is empty', 'info')
-                return redirect(url_for('main.home'))
-            send_message(email, message)
-            flash('Message Sent', 'info')
-        except EmailNotValidError as e:
-            flash('Enter valid email', 'danger')
+        if(message == ''):
+            flash('Message is empty', 'warning')
+            return redirect(url_for('main.home'))
+        send_message(current_user.email, message)
+        reply_message(current_user.email)
+        flash('Message Sent', 'info')
     return redirect(url_for('main.home'))

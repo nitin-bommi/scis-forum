@@ -88,7 +88,7 @@
 
           </div>
         </div>
-        <div class="content-section">
+        <!-- <div class="content-section">
           <h3>Our Sidebar</h3>
           <p class='text-muted'>You can put any information here you'd like.
           <ul class="list-group">
@@ -98,25 +98,21 @@
             <li class="list-group-item list-group-item-light">etc</li>
           </ul>
           </p>
-        </div>
+        </div> -->
+        {% if current_user.is_authenticated %}
         <div class="content-section">
-          <h3>Contact Form</h3>
+          <h3>Any suggestions?</h3>
           <form action="{{ url_for('main.contact') }}" method="POST" onsubmit="validate_contact()" id="contact_form">
             <div class="mb-3">
-              <label for="email" class="form-label">Email address</label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
-              <small id="email_error_block" class="text-danger"></small>
-            </div>
-            <div class="mb-3">
-              <label for="message" class="form-label">Message</label>
-              <textarea class="form-control" name="message" id="message" rows="3" required></textarea>
+              <textarea class="form-control" name="message" id="message" rows="5" required></textarea>
               <small id="message_error_block" class="text-danger"></small>
             </div>
-            <div class="mb-3">
-              <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="mb-3 text-center">
+              <button type="submit" class="btn button-outline">Submit</button>
             </div>
           </form>
         </div>
+        {% endif %}
       </div>
     </div>
   </main>
