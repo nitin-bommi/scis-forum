@@ -1,41 +1,97 @@
 {% extends "base.html" %}
 {% block content %}
+<h1>Welcome to <i>SCIS Forum</i></h1> 
 <div class="content-section">
-    <h1>About</h1>
-    <p>We are a team of four students, <a href="https://github.com/Nitin1901">Nitin</a>, <a href="https://github.com/Yashi1011">Yasaswini</a>, <a href="https://github.com/roopa-yashaswini">Roopa</a> and <a href="https://github.com/Amruta789">Amruta</a> who just wanted a free platform for all of SCIS to share content
-        related to academics. If you have any articles to write in Computer Science, an online course playlist to share, a PDF of class notes,
-        or a link to an internship opportunity, if you feel it's anything useful, then share it freely with all in SCIS.
-        We wanted to make this forum a place where not just professors or officials make announcements to students, but students can make announcements as well.
-        When we had our first ever online semester in 2020, my batch in particular faced a lot of issues when it came to scheduling exams and deadlines
-        for assignments. We had subjects that didn't belong to just IMTech, but to MCA as well. A change in dates here would cause
-        problems for other class students. So we made this calendar, an event calendar, where the event could be an exam, an assignment deadline, 
-        a seminar/webinar, a fest, a holiday, any event that those of SCIS should know about, available to all. A centralised timatable for SCIS, you
-        could call it.
-    </p>
-    <p> 
-        We made a chat application as well so that you can have private sharing of information and resources. Mind you that this forum 
-        is for academic purposes only, you have plenty of social networking areas for sharing other content. 
-    </p>
-    <p>
-        We also made a feature where you could login with face instead of password when session expires. The face authorisation
-        feature is entirely optional, and we assure that your privacy is not at risk. When registering with your face, it is converted
-        to a 128-d encoding, and only the encoded file is stored. Your original picture is inaccessible even to the administrators 
-        since so far there is no technique to reverse engineer your image from a 128-d encoding. 
-    </p>
-    <p>This website was made with Flask framework in Python, with Jinja templates for the views.</p>
-    <p>
-        We envision a lot of scope for this website if you're all willing to work with us. We are striving to add features
-        and grow this platform for SCIS. We will even make the corresponding mobile application for this forum.
-         One day, we even want to add an online terminal, and an IDE for writing programs in any language. 
-        We want to make other platforms where we can write exams or search for educational resources, or have lectures 
-        specific to our professors freely available, not just for one batch, but for future batches as well.
-    </p>
-    <p>
-        If you have any bugs to report, or any features you would like us to add, you can always contact us here.
-        The repository for this website and it's source code is public on github, feel free to contribute.
-    </p>
-    <p>
-        PS: We have dark mode too.
-    </p>
+    <h2>Introduction</h2>
+    <hr>
+    <p>We wanted to provide you the unsatisfied requirements by moodle:</p>
+    <ul>
+        <li>Quick session time-outs 😤</li>
+        <li>Unattractive CSS 🤒</li>
+        <li>No dark mode - <i>Hmm... light attracts bugs and we are allergic to bugs</i> 😨</li>
+        <li>No communication between different course students 😢</li>
+        <li>Time table clashes 😫</li>
+    </ul>
+    So we came up with a solution - 
+    <p class="font-italic">"...A unique shared platform for our school."</p>
 </div>
-{% endblock content %}
+<div class="content-section">
+    <h2>What we included</h2>
+    <hr>
+    <ul>
+        <li>
+            Shared time-table for all users 📆
+            <ul>
+                <li>Read access to students</li>
+                <li>Read-write access to faculty</li>
+            </ul>
+        </li>
+        <li>Forum ✍️</li>
+        <li>NLP to filter-out unparliamentary words 🤖</li>
+        <li>Login with face 🧑</li>
+        <li>Dark mode feature - <i>no more bugs</i> 🐞</li>
+        <li>Clean UI 🎨</li>
+    </ul>
+    <p class="font-italic">We hope that we surprised you!</p>
+    Let us take you through the security features.
+</div>
+<div class="content-section">
+    <h2>Security features</h2>
+    <br>
+    <ul>
+        <li>Protecting session data ✅</li>
+        <li>Protection from URL spoofing ✅</li>
+        <li>Protecting file names ✅</li>
+        <li>Server time ✅</li>
+        <li>Password hashing ✅</li>
+        <li>Timed tokens ✅</li>
+        <li>Protecting facial data ✅</li>
+        <li>Monitoring posts content ✅</li>
+    </ul>    
+</div>
+<div class="content-section">
+    We have added a lot of features to our TO-DO and will roll out them soon.
+    We appreciate you fo spending time to go through the application.
+    We are open to suggestions of ay kind (to suggest, you must login).  
+    So finally, our team...
+</div>
+<div class="content-section">
+    <ul>
+        <li>
+            <h3><a href="https://github.com/Nitin1901">Nitin</a></h3>
+            <p class="font-italic">
+                Hey, <br> I am a 3rd year IMTech student. 
+                I started this project during December 2020. 
+                I was looking for some collaborators and I found the perfect ones!
+                They helped me through every stage and never gave up despite a huge break when the semester started.
+                We're dedicated to giving you the very best of this application, with a focus on: <br>
+                    - User experience <br>
+                    - SOTA features <br>
+                    - Uniqueness
+                </ul>
+            </p>
+        </li>
+        <hr>
+        <li>
+            <h3><a href="https://github.com/Yashi1011">Yasaswini</a></h3>
+            <p class="font-italic">
+                Hello
+            </p>
+        </li>
+        <hr>
+        <li>
+            <h3><a href="https://github.com/roopa-yashaswini">Roopa</a></h3>
+            <p class="font-italic">
+                
+            </p>
+        </li>
+        <hr>
+        <li>
+            <h3><a href="https://github.com/Amruta789">Amruta</a></h3>
+            <p class="font-italic">
+                
+            </p>
+        </li>
+    </ul>
+</div>
+{%endblock %}
