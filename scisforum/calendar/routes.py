@@ -39,11 +39,9 @@ def update_event():
         abort(403)
     if request.method == 'POST':
         title = request.form['title']
-        print(title)
         start_time = dt.parse(request.form['start'])
         end_time = dt.parse(request.form['end'])
         id = request.form['id']
-        print(id, start_time, end_time)
         event = Event.query.get_or_404(id)
         if event.creator_id != current_user.id:
             abort(403)
