@@ -24,7 +24,7 @@ h6 {
 .site-header .navbar-nav .nav-link:hover {
   color: #ffffff;
   background-color: #3a8fcc;
-  border-radius: 20px;
+  border-radius: 15px;
 }
 
 .site-header .navbar-nav .nav-link.active {
