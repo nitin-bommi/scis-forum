@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" /> -->
+<link href="{{ url_for('static', filename='calendar.css') }}" rel='stylesheet' />
 {% endblock %}
 
 {% block content %}
@@ -68,11 +69,12 @@
 {% endblock %}
 
 {% block script %}
+<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
 <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
-<!-- <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
-<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script> -->
+ <!-- <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
+<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>  -->
 <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
-<script>
+<!-- <script>
   function toBool(){
     if('{{current_user.access}}' === 'True'){
       return true;
@@ -221,6 +223,173 @@
       }
     });
   });
+</script> -->
+<script>
+  function toBool(){
+    if('{{current_user.access}}' === 'True'){
+      return true;
+    }
+    return false;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      editable: true,
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right:''
+      },
+      displayEventTime : false,
+      events: [
+        {% for row in events %}
+          { id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', creator : '{{row.username}}'}, 
+        {% endfor %}
+      ],
+      eventLimit: 3,
+      views: {
+        month: {
+          eventLimit: 3
+        }
+      },
+      selectable: true,
+      selectHelper: true,
+      select: function(start, end, allDay) {
+        if(toBool()){
+          start=moment(start).format('YYYY-MM-DDTHH:mm'); 
+          end=moment(end).format('YYYY-MM-DDTHH:mm');
+          $("#start_time").val(start.toString());
+          $("#end_time").val(end.toString());
+          $("#insert_modal").modal("show");
+          
+          $( "#insert_modal" ).submit(function( e ) {
+            e.preventDefault();
+            var title = $('#title').val().trim();
+            var start_time = $('#start_time').val();
+            var end_time = $('#end_time').val();
+            var flag = 0;
+            start=moment(start_time).format('YYYY-MM-DDTHH:mm:ssZ'); 
+            end=moment(end_time).format('YYYY-MM-DDTHH:mm:ssZ');
+
+            if(!title){
+              $('#title_error_block').html('Enter the Event Name');
+              flag = 1;
+            }
+            if(moment(start_time).toDate().getTime() > moment(end_time).toDate().getTime()){
+              $('#end_error_block').html('End Time is less than Start Time');
+              flag = 1;
+            }
+
+            if(!flag) {
+              $.ajax({
+                url: "{{ url_for('calendar.insert_event') }}",
+                type: "POST",
+                data: {title:title, start:start, end:end},
+                success: function(){
+                  $("#insert_modal").modal("hide");
+                  calendar.render();
+                  window.location.replace("{{ url_for('calendar.calendar_view') }}");
+                },
+                statusCode: {
+                  403: function () {
+                      $("#insert_modal").modal("hide");
+                      alert('Not Authorized');
+                      //window.location.replace("url_for(errors.app_errorhandler(404))");
+                  }
+                }
+              })
+            }
+          });
+        }
+      },
+      editable: toBool(),
+      // eventResize: function(event) {
+      //   start = moment(event.start).format('YYYY-MM-DDTHH:mm:ssZ'); 
+      //   end = moment(event.end).format('YYYY-MM-DDTHH:mm:ssZ'); 
+      //   var title = event.title;
+      //   var id = event.id;
+      //   $.ajax({
+      //     url: "{{ url_for('calendar.update_event') }}",
+      //     type: "POST",
+      //     data: {title:title, start:start, end:end, id:id},
+      //     success:function() {
+      //       calendar.render();
+      //     },
+      //     statusCode: {
+      //       403: function () {
+      //           alert('Not Authorized');
+      //           //window.location.replace("url_for(errors.app_errorhandler(404))");
+      //       }
+      //     }
+      //   })
+      // initialDate: '2020-09-12',
+      // editable: true,
+      // selectable: true,
+      // businessHours: true,
+      // dayMaxEvents: true, // allow "more" link when too many events
+      // events: [
+      //   {
+      //     title: 'All Day Event',
+      //     start: '2020-09-01'
+      //   },
+      //   {
+      //     title: 'Long Event',
+      //     start: '2020-09-07',
+      //     end: '2020-09-10'
+      //   },
+      //   {
+      //     groupId: 999,
+      //     title: 'Repeating Event',
+      //     start: '2020-09-09T16:00:00'
+      //   },
+      //   {
+      //     groupId: 999,
+      //     title: 'Repeating Event',
+      //     start: '2020-09-16T16:00:00'
+      //   },
+      //   {
+      //     title: 'Conference',
+      //     start: '2020-09-11',
+      //     end: '2020-09-13'
+      //   },
+      //   {
+      //     title: 'Meeting',
+      //     start: '2020-09-12T10:30:00',
+      //     end: '2020-09-12T12:30:00'
+      //   },
+      //   {
+      //     title: 'Lunch',
+      //     start: '2020-09-12T12:00:00'
+      //   },
+      //   {
+      //     title: 'Meeting',
+      //     start: '2020-09-12T14:30:00'
+      //   },
+      //   {
+      //     title: 'Happy Hour',
+      //     start: '2020-09-12T17:30:00'
+      //   },
+      //   {
+      //     title: 'Dinner',
+      //     start: '2020-09-12T20:00:00'
+      //   },
+      //   {
+      //     title: 'Birthday Party',
+      //     start: '2020-09-13T07:00:00'
+      //   },
+      //   {
+      //     title: 'Click for Google',
+      //     url: 'http://google.com/',
+      //     start: '2020-09-28'
+      //   }
+      // ]
+    });
+
+    calendar.render();
+  });
+
 </script>
 {% endblock %}
 
