@@ -305,86 +305,57 @@
         }
       },
       editable: toBool(),
-      // eventResize: function(event) {
-      //   start = moment(event.start).format('YYYY-MM-DDTHH:mm:ssZ'); 
-      //   end = moment(event.end).format('YYYY-MM-DDTHH:mm:ssZ'); 
-      //   var title = event.title;
-      //   var id = event.id;
-      //   $.ajax({
-      //     url: "{{ url_for('calendar.update_event') }}",
-      //     type: "POST",
-      //     data: {title:title, start:start, end:end, id:id},
-      //     success:function() {
-      //       calendar.render();
-      //     },
-      //     statusCode: {
-      //       403: function () {
-      //           alert('Not Authorized');
-      //           //window.location.replace("url_for(errors.app_errorhandler(404))");
-      //       }
-      //     }
-      //   })
-      // initialDate: '2020-09-12',
-      // editable: true,
-      // selectable: true,
-      // businessHours: true,
-      // dayMaxEvents: true, // allow "more" link when too many events
-      // events: [
-      //   {
-      //     title: 'All Day Event',
-      //     start: '2020-09-01'
-      //   },
-      //   {
-      //     title: 'Long Event',
-      //     start: '2020-09-07',
-      //     end: '2020-09-10'
-      //   },
-      //   {
-      //     groupId: 999,
-      //     title: 'Repeating Event',
-      //     start: '2020-09-09T16:00:00'
-      //   },
-      //   {
-      //     groupId: 999,
-      //     title: 'Repeating Event',
-      //     start: '2020-09-16T16:00:00'
-      //   },
-      //   {
-      //     title: 'Conference',
-      //     start: '2020-09-11',
-      //     end: '2020-09-13'
-      //   },
-      //   {
-      //     title: 'Meeting',
-      //     start: '2020-09-12T10:30:00',
-      //     end: '2020-09-12T12:30:00'
-      //   },
-      //   {
-      //     title: 'Lunch',
-      //     start: '2020-09-12T12:00:00'
-      //   },
-      //   {
-      //     title: 'Meeting',
-      //     start: '2020-09-12T14:30:00'
-      //   },
-      //   {
-      //     title: 'Happy Hour',
-      //     start: '2020-09-12T17:30:00'
-      //   },
-      //   {
-      //     title: 'Dinner',
-      //     start: '2020-09-12T20:00:00'
-      //   },
-      //   {
-      //     title: 'Birthday Party',
-      //     start: '2020-09-13T07:00:00'
-      //   },
-      //   {
-      //     title: 'Click for Google',
-      //     url: 'http://google.com/',
-      //     start: '2020-09-28'
-      //   }
-      // ]
+      eventDrop: function(event) {
+        //alert('called');
+        start = moment(event.start).format('YYYY-MM-DDTHH:mm:ssZ'); 
+        end = moment(event.end).format('YYYY-MM-DDTHH:mm:ssZ');
+        var title = event.event._def.title;
+        var id = event.event._def.publicId;  
+        $.ajax({
+          url: "{{ url_for('calendar.update_event') }}",
+          type: "POST",
+          data: {title:title, start:start, end:end, id:id},
+          success: function() {
+            calendar.render();
+          },
+          statusCode: {
+            403: function () {
+                alert('Not Authorized');
+                //window.location.replace("url_for(errors.app_errorhandler(404))");
+            }
+          }
+        });
+      },
+      eventClick: function(event) {
+        var start = moment(event.start).format('DD/MM/YYYY HH:mm:ss'); 
+        var end = moment(event.end).format('DD/MM/YYYY HH:mm:ss');
+        console.log(event.event._def) 
+        $('#event_title').html(event.event._def.title);
+        $('#creator').html(`Created By: ${event.event._def.extendedProps.creator}`);
+        $('#time').html(`Time: ${start} - ${end}`);
+        $('#delete_modal').modal("show");
+
+        $( "#delete_modal" ).submit(function( e) {
+          e.preventDefault();
+          var id = event.event._def.publicId;
+          $.ajax({
+            url: "{{ url_for('calendar.delete_event') }}",
+            type: "POST",
+            data: {id:id},
+            success: function() {
+              calendar.render();
+              $('#delete_modal').modal("hide");
+              window.location.replace("{{ url_for('calendar.calendar_view') }}");
+            },
+            statusCode: {
+              403: function () {
+                  alert('Not Authorized');
+                  //window.location.replace("url_for(errors.app_errorhandler(404))");
+              }
+            }
+          })
+        });
+      }
     });
 
     calendar.render();
