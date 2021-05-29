@@ -70,160 +70,13 @@
 
 {% block script %}
 <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
-<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
+<script src='https://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>
  <!-- <script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery.min.js'></script>
 <script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>  -->
-<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
-<!-- <script>
-  function toBool(){
-    if('{{current_user.access}}' === 'True'){
-      return true;
-    }
-    return false;
-  }
-  $(document).ready(function() {
-    var calendar = $('#calendar').fullCalendar({
-      editable: true,
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right:''
-      },
-      displayEventTime : false,
-      events: [
-        {% for row in events %}
-          { id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', creator : '{{row.username}}'}, 
-        {% endfor %}
-      ],
-      eventLimit: 3,
-      views: {
-        month: {
-          eventLimit: 3
-        }
-      },
-      selectable: true,
-      selectHelper: true,
-      select: function(start, end, allDay) {
-        if(toBool()){
-          start=moment(start).format('YYYY-MM-DDTHH:mm'); 
-          end=moment(end).format('YYYY-MM-DDTHH:mm');
-          $("#start_time").val(start.toString());
-          $("#end_time").val(end.toString());
-          $("#insert_modal").modal("show");
-          
-          $( "#insert_modal" ).submit(function( e ) {
-            e.preventDefault();
-            var title = $('#title').val().trim();
-            var start_time = $('#start_time').val();
-            var end_time = $('#end_time').val();
-            var flag = 0;
-            start=moment(start_time).format('YYYY-MM-DDTHH:mm:ssZ'); 
-            end=moment(end_time).format('YYYY-MM-DDTHH:mm:ssZ');
+<script src='https://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>
 
-            if(!title){
-              $('#title_error_block').html('Enter the Event Name');
-              flag = 1;
-            }
-            if(moment(start_time).toDate().getTime() > moment(end_time).toDate().getTime()){
-              $('#end_error_block').html('End Time is less than Start Time');
-              flag = 1;
-            }
-
-            if(!flag) {
-              $.ajax({
-                url: "{{ url_for('calendar.insert_event') }}",
-                type: "POST",
-                data: {title:title, start:start, end:end},
-                success: function(){
-                  $("#insert_modal").modal("hide");
-                  calendar.fullCalendar('refetchEvents');
-                  window.location.replace("{{ url_for('calendar.calendar_view') }}");
-                },
-                statusCode: {
-                  403: function () {
-                      $("#insert_modal").modal("hide");
-                      alert('Not Authorized');
-                      //window.location.replace("url_for(errors.app_errorhandler(404))");
-                  }
-                }
-              })
-            }
-          });
-        }
-      },
-      editable: toBool(),
-      eventResize: function(event) {
-        start = moment(event.start).format('YYYY-MM-DDTHH:mm:ssZ'); 
-        end = moment(event.end).format('YYYY-MM-DDTHH:mm:ssZ'); 
-        var title = event.title;
-        var id = event.id;
-        $.ajax({
-          url: "{{ url_for('calendar.update_event') }}",
-          type: "POST",
-          data: {title:title, start:start, end:end, id:id},
-          success:function() {
-            calendar.fullCalendar('refetchEvents');
-          },
-          statusCode: {
-            403: function () {
-                alert('Not Authorized');
-                //window.location.replace("url_for(errors.app_errorhandler(404))");
-            }
-          }
-        })
-      },
-      eventDrop: function(event) {
-        start = moment(event.start).format('YYYY-MM-DDTHH:mm:ssZ'); 
-        end = moment(event.end).format('YYYY-MM-DDTHH:mm:ssZ');
-        var title = event.title;
-        var id = event.id;  
-        $.ajax({
-          url: "{{ url_for('calendar.update_event') }}",
-          type: "POST",
-          data: {title:title, start:start, end:end, id:id},
-          success: function() {
-            calendar.fullCalendar('refetchEvents');
-          },
-          statusCode: {
-            403: function () {
-                alert('Not Authorized');
-                //window.location.replace("url_for(errors.app_errorhandler(404))");
-            }
-          }
-        });
-      },
-      eventClick: function(event) {
-        var start = moment(event.start).format('DD/MM/YYYY HH:mm:ss'); 
-        var end = moment(event.end).format('DD/MM/YYYY HH:mm:ss'); 
-        $('#event_title').html(event.title);
-        $('#creator').html(`Created By: ${event.creator}`);
-        $('#time').html(`Time: ${start} - ${end}`);
-        $('#delete_modal').modal("show");
-
-        $( "#delete_modal" ).submit(function( e) {
-          e.preventDefault();
-          var id = event.id;
-          $.ajax({
-            url: "{{ url_for('calendar.delete_event') }}",
-            type: "POST",
-            data: {id:id},
-            success: function() {
-              calendar.fullCalendar('refetchEvents');
-              $('#delete_modal').modal("hide");
-              window.location.replace("{{ url_for('calendar.calendar_view') }}");
-            },
-            statusCode: {
-              403: function () {
-                  alert('Not Authorized');
-                  //window.location.replace("url_for(errors.app_errorhandler(404))");
-              }
-            }
-          })
-        });
-      }
-    });
-  });
-</script> -->
+<!-- <script src='https://cdn.jsdelivr.net/npm/moment@2.27.0/min/moment.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@fullcalendar/moment@5.5.0/main.global.min.js'></script>  -->
 <script>
   function toBool(){
     if('{{current_user.access}}' === 'True'){
@@ -237,7 +90,7 @@
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
       editable: true,
-      header: {
+      headerToolbar: {
         left: 'prev,next today',
         center: 'title',
         right:''
@@ -248,20 +101,15 @@
           { id : '{{row.id}}', title : '{{row.title}}', start : '{{row.start_time}}', end : '{{row.end_time}}', creator : '{{row.username}}'}, 
         {% endfor %}
       ],
-      eventLimit: 3,
-      views: {
-        month: {
-          eventLimit: 3
-        }
-      },
+      dayMaxEvents: 1,
       selectable: true,
-      selectHelper: true,
-      select: function(start, end, allDay) {
+      select: function(start, allDay) {
         if(toBool()){
-          start=moment(start).format('YYYY-MM-DDTHH:mm'); 
-          end=moment(end).format('YYYY-MM-DDTHH:mm');
-          $("#start_time").val(start.toString());
-          $("#end_time").val(end.toString());
+          let end_time = start.end;
+          start=moment(start.start).format('YYYY-MM-DDTHH:mm'); 
+          let end=moment(end_time).format('YYYY-MM-DDTHH:mm');
+          $("#start_time").val(start);
+          $("#end_time").val(end);
           $("#insert_modal").modal("show");
           
           $( "#insert_modal" ).submit(function( e ) {
@@ -306,9 +154,8 @@
       },
       editable: toBool(),
       eventDrop: function(event) {
-        //alert('called');
-        start = moment(event.start).format('YYYY-MM-DDTHH:mm:ssZ'); 
-        end = moment(event.end).format('YYYY-MM-DDTHH:mm:ssZ');
+        start = moment(event.event._instance.range.start).format('YYYY-MM-DDTHH:mm:ssZ'); 
+        end = moment(event.event._instance.range.start).format('YYYY-MM-DDTHH:mm:ssZ');
         var title = event.event._def.title;
         var id = event.event._def.publicId;  
         $.ajax({
@@ -327,9 +174,8 @@
         });
       },
       eventClick: function(event) {
-        var start = moment(event.start).format('DD/MM/YYYY HH:mm:ss'); 
-        var end = moment(event.end).format('DD/MM/YYYY HH:mm:ss');
-        console.log(event.event._def) 
+        var start = moment(event.event._instance.range.start).format('DD/MM/YYYY HH:mm:ss'); 
+        var end = moment(event.event._instance.range.end).format('DD/MM/YYYY HH:mm:ss');
         $('#event_title').html(event.event._def.title);
         $('#creator').html(`Created By: ${event.event._def.extendedProps.creator}`);
         $('#time').html(`Time: ${start} - ${end}`);
