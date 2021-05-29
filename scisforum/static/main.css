@@ -267,6 +267,17 @@ textarea {
   max-width: 70%;
 }
 
+.message-type input {
+  box-shadow: none;
+  border: 0.8px solid #ccc;
+}
+
+.message-type input:focus {
+  outline-width: 0;
+  box-shadow: none;
+  border: 0.8px solid #ccc;
+}
+
 .switch {
   position: relative;
   display: inline-block;
