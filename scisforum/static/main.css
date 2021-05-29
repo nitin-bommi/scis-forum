@@ -13,6 +13,7 @@ h6 {
   color: #444444;
 }
 
+
 .bg-steel {
   background-color: #4ca1df;
 }
@@ -202,10 +203,40 @@ textarea {
   padding-bottom: 0px;
 }
 
+.chat-box{
+  overflow:auto; 
+  display:flex; 
+  flex-direction:column-reverse;
+  /* overflow-y: scroll;  */
+  height: 350px; 
+  padding: 10px 0px 0px 0px;
+}
+
+
+.chat-box::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.chat-box::-webkit-scrollbar-track {
+  background: white; 
+}
+ 
+/* Handle */
+.chat-box::-webkit-scrollbar-thumb {
+  background: rgb(197, 197, 197);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.chat-box::-webkit-scrollbar-thumb:hover {
+  background: rgb(121, 121, 121); 
+}
+
 .to{
-  display: flex;
+  clear: both;
   text-align:left; 
-  padding:1px;
+  padding: 1px;
 }
 
 .to-text{
@@ -220,11 +251,13 @@ textarea {
 }
 
 .from{
+  clear: both;
   text-align:left; 
-  padding:1px;
+  padding: 1px;
 }
 
 .from-text{
+  float: left;
   display: block;
   background-color: #f7ccdd;
   color: #000;

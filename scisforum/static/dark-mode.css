@@ -155,6 +155,19 @@
   border: 1px solid #4e4c4c;
 }
 
+[data-theme="dark"] .chat-box::-webkit-scrollbar-track {
+  background: #1d1a1a; 
+}
+
+[data-theme="dark"] .chat-box::-webkit-scrollbar-thumb {
+  background: #3f3f3f;
+  border-radius: 5px;
+}
+
+[data-theme="dark"] .chat-box::-webkit-scrollbar-thumb:hover {
+  background: #696969; 
+}
+
 [data-theme="dark"] .to-text{
   background-color: #ffcd36;
   color: #000;
