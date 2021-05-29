@@ -34,12 +34,13 @@ def contact():
 @main.route('/search', methods=['GET'])
 def search():
     keyword = request.args.get('search')
+    page = request.args.get('page', 1, type=int)
     if keyword is None:
         return redirect(url_for('main.home'))
     keyword = keyword.lower()
-    posts = Post.query.all()
-    result = []
-    for post in posts:
-        if keyword in post.title.lower():
-            result.append(post)
-    return render_template('home.html', posts=result)
+    posts = Post.query.filter(Post.title.like(f'%{keyword}%')).paginate(page=page, per_page=5)
+    # result = []
+    # for post in posts:
+    #     if keyword in post.title.lower():
+    #         result.append(post)
+    return render_template('home.html', posts=posts, keyword = keyword)

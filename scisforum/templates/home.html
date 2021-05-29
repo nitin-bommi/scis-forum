@@ -17,17 +17,31 @@
         </article>
     {% endfor %}
     <div class="text-center">
-      {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-        {% if page_num %}
-          {% if posts.page == page_num %}
-            <a class="btn mb-4 btn-pagination" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+      {% if not keyword %}
+        {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if page_num %}
+            {% if posts.page == page_num %}
+              <a class="btn mb-4 btn-pagination" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+            {% else %}
+              <a class="btn mb-4 btn-pagination-outline" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+            {% endif %}
           {% else %}
-            <a class="btn mb-4 btn-pagination-outline" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+            ...
           {% endif %}
-        {% else %}
-          ...
-        {% endif %}
-      {% endfor %}
+        {% endfor %}
+      {% else %}
+        {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if page_num %}
+            {% if posts.page == page_num %}
+              <a class="btn mb-4 btn-pagination" href="{{ url_for('main.search', page=page_num, search = keyword) }}">{{ page_num }}</a>
+            {% else %}
+              <a class="btn mb-4 btn-pagination-outline" href="{{ url_for('main.search', page=page_num, search = keyword) }}">{{ page_num }}</a>
+            {% endif %}
+          {% else %}
+            ...
+          {% endif %}
+        {% endfor %}
+      {% endif %}
     </div>
 {% endblock content %}
 
