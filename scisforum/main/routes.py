@@ -39,8 +39,4 @@ def search():
         return redirect(url_for('main.home'))
     keyword = keyword.lower()
     posts = Post.query.filter(Post.title.like(f'%{keyword}%')).paginate(page=page, per_page=5)
-    # result = []
-    # for post in posts:
-    #     if keyword in post.title.lower():
-    #         result.append(post)
-    return render_template('home.html', posts=posts, keyword = keyword)
+    return render_template('home.html', posts=posts, keyword=keyword)
