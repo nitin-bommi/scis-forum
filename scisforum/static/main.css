@@ -203,29 +203,35 @@ textarea {
 }
 
 .to{
-  text-align:right; 
-  padding:2px 5px;
+  display: flex;
+  text-align:left; 
+  padding:1px;
 }
 
 .to-text{
+  float: right;
+  display: block;
   background-color: #4ca1df;
   color: #fff;
-  margin: 1px 0;
+  margin: 0px;
   padding: 6px 12px; 
   border-radius: 8px;
+  max-width: 70%;
 }
 
 .from{
   text-align:left; 
-  padding:2px 5px;
+  padding:1px;
 }
 
 .from-text{
+  display: block;
   background-color: #f7ccdd;
   color: #000;
-  margin: 1px 0;
+  margin: 1px 0px;
   padding: 6px 12px;
   border-radius: 8px;
+  max-width: 70%;
 }
 
 .switch {
