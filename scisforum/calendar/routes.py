@@ -32,6 +32,7 @@ def insert_event():
             return redirect(url_for('calendar.calendar_view'))
 
 
+
 @calendar.route("/update_event", methods=['GET', 'POST'])
 @login_required
 def update_event():
