@@ -16,6 +16,7 @@ h6 {
   color: #444444;
 }
 
+
 .bg-steel {
   background-color: #4ca1df;
 }
@@ -40,9 +41,13 @@ h6 {
   border: 1px solid #dddddd;
   border-radius: 3px;
   margin-bottom: 20px;
+  max-width: 100%;
 }
 
 .article-title {
+  white-space: pre-line;
+  word-wrap    : break-word;
+  overflow-wrap: break-word;
   color: #444444;
 }
 
@@ -53,6 +58,8 @@ a.article-title:hover {
 
 .article-content {
   white-space: pre-line;
+  word-wrap    : break-word;
+  overflow-wrap: break-word;
 }
 
 .article-img {
@@ -206,30 +213,79 @@ textarea {
   padding-bottom: 0px;
 }
 
+.chat-box{
+  overflow:auto; 
+  display:flex; 
+  flex-direction:column-reverse;
+  /* overflow-y: scroll;  */
+  height: 350px; 
+  padding: 10px 0px 0px 0px;
+}
+
+
+.chat-box::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.chat-box::-webkit-scrollbar-track {
+  background: white; 
+}
+ 
+/* Handle */
+.chat-box::-webkit-scrollbar-thumb {
+  background: rgb(197, 197, 197);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.chat-box::-webkit-scrollbar-thumb:hover {
+  background: rgb(121, 121, 121); 
+}
+
 .to{
-  text-align:right; 
-  padding:2px 5px;
+  clear: both;
+  text-align:left; 
+  padding: 1px;
 }
 
 .to-text{
+  float: right;
+  display: block;
   background-color: #4ca1df;
   color: #fff;
-  margin: 1px 0;
+  margin: 0px;
   padding: 6px 12px; 
   border-radius: 8px;
+  max-width: 70%;
 }
 
 .from{
+  clear: both;
   text-align:left; 
-  padding:2px 5px;
+  padding: 1px;
 }
 
 .from-text{
+  float: left;
+  display: block;
   background-color: #f7ccdd;
   color: #000;
-  margin: 1px 0;
+  margin: 1px 0px;
   padding: 6px 12px;
   border-radius: 8px;
+  max-width: 70%;
+}
+
+.message-type input {
+  box-shadow: none;
+  border: 0.8px solid #ccc;
+}
+
+.message-type input:focus {
+  outline-width: 0;
+  box-shadow: none;
+  border: 0.8px solid #ccc;
 }
 
 .switch {

@@ -31,12 +31,12 @@
                 <div class="container chat-heading">
                     <span>{{receiver}}</span>
                 </div>
-                <div id="chat-box" style="overflow-y: scroll; height: 350px; padding: 10px 0px 0px 0px;">
+                <div id="chat-box" class="chat-box">
                     <div id="chats">
                     </div>
                 </div>
                 {% from "chat_form.html" import render_field %}
-                <div class="m-0">
+                <div class="m-0 message-type">
                     <form method="POST" action="">
                         <div class="form-group input-group mb-0">
                             {{render_field(form.body, class_="form-control chat-text", value="", placeholder="Enter your text...")}}

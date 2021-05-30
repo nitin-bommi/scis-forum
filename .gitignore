@@ -4,4 +4,3 @@ venv/
 **/models/data.csv
 **/models/train_model.py
 /scisforum/site.db
-/scisforum/config.py
