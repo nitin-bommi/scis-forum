@@ -1,7 +1,10 @@
 body {
   background: #fafafa;
   color: #333333;
-  padding: 100px;
+}
+
+.container{
+  padding-top: 15px;
 }
 
 h1,
