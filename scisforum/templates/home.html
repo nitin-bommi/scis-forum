@@ -2,7 +2,6 @@
 
 {% block content %}
     {% for post in posts.items %}
-        <!-- <div class="d-flex"> -->
           <div class="d-lg-flex d-inline-flex content-section" id='{{post.id}}'>
             <div class="flex-shrink-0">
               <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">

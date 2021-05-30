@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-  <article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-    <div class="media-body">
-      <div class="article-metadata d-flex justify-content-between p-3">
-        <a class="mr-2 link-color" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+  <article class="d-lg-flex d-inline-flex content-section">
+    <div class="flex-shrink-0">
+      <img class="rounded-circle article-img" alt="Profile"
+      src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+    </div>
+    <div class="flex-grow-1 ms-3">
+      <a class="mr-2 link-color" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+      <div class="article-metadata d-flex justify-content-end">
         <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
       </div>
       {% if post.author == current_user %}
