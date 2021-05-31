@@ -6,7 +6,7 @@
       <img class="rounded-circle account-img" src="{{ image_file }}">
     </div>
     <div class="flex-grow-1 ms-3">
-      <h2 class="account-heading">{{ current_user.username }}</h2>
+      <h2>{{ current_user.username }}</h2>
       <p class="text-secondary">{{ current_user.email }}</p>
     </div>
   </div>
@@ -40,7 +40,7 @@
     <div class="form-group">
       {{ form.submit(class="btn button-outline") }}
       
-      <button type="button" class="btn button-outline" data-toggle="modal" data-target="#faceModal">
+      <button type="button" class="btn button-outline" data-bs-toggle="modal" data-bs-target="#faceModal">
         Update Face Data
       </button>
     </div>
@@ -53,14 +53,14 @@
       <div class="modal-content dark-modal">
         <div class="modal-header">
           <h5 class="modal-title" id="faceModalLabel">Update Face</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body text-center">
           <div class="form-group">
-            <video id="stream" width="600" height="480">
-              <canvas id="capture" width="600" height="480">
+            <video id="stream" class="videoInsert">
+              <canvas id="capture">
               </canvas>
             </video><br>
             <button id="btn-capture" type="button" class="btn button-outline">Capture Image</button>
@@ -70,7 +70,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <input class="btn btn-warning" type="submit" value="Update">
         </div>
       </div>
@@ -134,12 +134,14 @@
       $("#face_img").val(res)
     }
   }
-  $(window).on('shown.bs.modal', function () {
+  var myModal = document.getElementById('faceModal')
+
+  myModal.addEventListener('shown.bs.modal', function () {
     startStreaming();
     captureSnapshot();
-  });
-  $(window).on('hidden.bs.modal', function () {
+  })
+  myModal.addEventListener('hidden.bs.modal', function () {
     stopStreaming();
-  });
+  })
 </script>
 {% endblock %}

@@ -1,46 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% for post in posts.items %}
-          <div class="d-lg-flex d-inline-flex content-section" id='{{post.id}}'>
-            <div class="flex-shrink-0">
-              <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-            </div>
-            <div class="flex-grow-1 ms-3">
-              <div>
-                <div class="article-metadata"> 
-                  <div class="row">
-                    <a class="link-color" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-                  </div> 
-                  <div class="d-flex justify-content-end">
-                    <small class="text-muted">on {{ post.date_posted.strftime('%d-%m-%Y') }}</small>
-                  </div>
-                </div>             
-                <div class="card-body">
-                  <h2 class="card-title">
-                    <a href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a>
-                  </h2>
-                  <p class="card-text" >{{ post.content }}</p>
-                </div>
+  <div>
+    {% for post in posts.items %}    
+      <div class="d-lg-flex d-inline-flex content-section" id='{{post.id}}'>
+        <div class="flex-shrink-0">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+        </div>
+        <div class="flex-grow-1 ms-3">
+          <div>
+            <div class="article-metadata"> 
+              <a class="link-color" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+              <div class="d-flex justify-content-end">
+                <small class="text-muted">on {{ post.date_posted.strftime('%d-%m-%Y') }}</small>
               </div>
+            </div>             
+            <div class="card-body">
+              <h2 class="card-title">
+                <a href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a>
+              </h2>
+              <p class="card-text" >{{ post.content }}</p>
             </div>
           </div>
-<<<<<<< HEAD
-        <!-- </div> -->
-        
-          <!-- <div class="card-body"> -->
-            <!-- <div class="col-md-3">
-            </div> -->
-           
-            <!-- <div class="p-2 text-wrap"> -->
-              <!-- <div class="card-body"> -->
-                
-              <!-- </div> -->
-            <!-- </div> -->
-          <!-- </div> -->
-=======
         </div>
->>>>>>> origin/master
+      </div>
     {% endfor %}
     <div class="text-center">
       {% if not keyword %}
@@ -69,6 +52,7 @@
         {% endfor %}
       {% endif %}
     </div>
+  </div>
 {% endblock content %}
 
 {% block script %}
