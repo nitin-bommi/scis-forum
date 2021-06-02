@@ -173,7 +173,9 @@ textarea {
 }
 
 .chat-user-list{
+  overflow:auto; 
   background-color: #ffffff;
+  height: 490px;
   margin: 0px;
   padding: 0px;
   border: 1px solid #bdd7eb;
@@ -185,6 +187,11 @@ textarea {
   font-size: 18px;
   color: #000;
   padding: 10px;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0px;
+  left: 0px;
+  z-index: 50;
 }
 
 .chat-heading{
@@ -214,28 +221,32 @@ textarea {
   display:flex; 
   flex-direction:column-reverse;
   /* overflow-y: scroll;  */
-  height: 350px; 
+  height: 380px; 
   padding: 10px 0px 0px 0px;
 }
 
 
-.chat-box::-webkit-scrollbar {
+.chat-box::-webkit-scrollbar,
+.chat-user-list::-webkit-scrollbar {
   width: 5px;
 }
 
 /* Track */
-.chat-box::-webkit-scrollbar-track {
+.chat-box::-webkit-scrollbar-track,
+.chat-user-list::-webkit-scrollbar-track {
   background: white; 
 }
  
 /* Handle */
-.chat-box::-webkit-scrollbar-thumb {
+.chat-box::-webkit-scrollbar-thumb,
+chat-user-list::-webkit-scrollbar-thumb {
   background: rgb(197, 197, 197);
   border-radius: 5px;
 }
 
 /* Handle on hover */
-.chat-box::-webkit-scrollbar-thumb:hover {
+.chat-box::-webkit-scrollbar-thumb:hover,
+.chat-user-list::-webkit-scrollbar-thumb:hover {
   background: rgb(121, 121, 121); 
 }
 
