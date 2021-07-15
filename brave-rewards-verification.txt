@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: scisforum.me
+Token: 5f1c99e19a7f97ce243432133b255f173afd0169a3496d7eeeb24ab48a2ff7ac
