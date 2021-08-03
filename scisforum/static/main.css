@@ -161,6 +161,11 @@ textarea {
   height: 500px;
 }
 
+.post-date{
+  white-space: nowrap;
+  
+}
+
 .date{
   color: #4ca1df;
   font-size: x-large;
